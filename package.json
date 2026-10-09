@@ -1,0 +1,13 @@
+{
+  "name": "net-tools-web",
+  "version": "1.0.1",
+  "private": true,
+  "description": "App web 100% frontend para redes, cableado, ponchado e instalación. Sin backend, datos locales.",
+  "scripts": {
+    "test": "node tests/e2e.spec.cjs",
+    "serve": "node tests/server.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.0"
+  }
+}
