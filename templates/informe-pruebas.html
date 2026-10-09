@@ -1,0 +1,138 @@
+<template id="informe-template">
+  <section class="informe">
+    <header class="informe__head">
+      <h1 class="informe__titulo">Informe de pruebas de certificación</h1>
+      <p class="informe__meta" data-informe-meta></p>
+    </header>
+    <p class="informe__resumen" data-informe-resumen></p>
+    <table class="informe__tabla">
+      <caption class="informe__caption">Resultados por enlace</caption>
+      <thead>
+        <tr>
+          <th scope="col">Enlace</th>
+          <th scope="col">Mapa</th>
+          <th scope="col">Long. (m)</th>
+          <th scope="col">Aten. (dB)</th>
+          <th scope="col">NEXT (dB)</th>
+          <th scope="col">Retorno (dB)</th>
+          <th scope="col">Resultado</th>
+          <th scope="col">Fecha</th>
+        </tr>
+      </thead>
+      <tbody data-informe-filas></tbody>
+    </table>
+    <footer class="informe__pie" data-informe-pie></footer>
+  </section>
+</template>
+
+<template id="informe-fila">
+  <tr>
+    <td data-inf-link></td>
+    <td data-inf-mapa></td>
+    <td data-inf-long></td>
+    <td data-inf-aten></td>
+    <td data-inf-next></td>
+    <td data-inf-retorno></td>
+    <td data-inf-resultado></td>
+    <td data-inf-fecha></td>
+  </tr>
+</template>
+
+<style id="informe-styles">
+  .informe {
+    padding: 8mm;
+    color: #0f172a;
+    background-color: #ffffff;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .informe__titulo {
+    margin: 0 0 2mm;
+    font-size: 6mm;
+    line-height: 1.15;
+  }
+
+  .informe__meta {
+    margin: 0 0 4mm;
+    font-size: 3.2mm;
+    color: #475569;
+  }
+
+  .informe__resumen {
+    margin: 0 0 4mm;
+    font-size: 3.6mm;
+    font-weight: 600;
+  }
+
+  .informe__tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 3.2mm;
+  }
+
+  .informe__caption {
+    margin-bottom: 2mm;
+    text-align: left;
+    font-size: 3.2mm;
+    color: #475569;
+  }
+
+  .informe__tabla th,
+  .informe__tabla td {
+    padding: 2mm;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #94a3b8;
+  }
+
+  .informe__tabla thead th {
+    background-color: #e2e8f0;
+    font-weight: 700;
+  }
+
+  .informe__tabla tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+
+  .informe__badge {
+    font-weight: 700;
+  }
+
+  .informe__badge.is-pass {
+    color: #2f9e44;
+  }
+
+  .informe__badge.is-fail {
+    color: #dc2626;
+  }
+
+  .informe__pie {
+    margin-top: 6mm;
+    font-size: 3mm;
+    color: #64748b;
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+
+    .informe,
+    .informe * {
+      visibility: visible;
+    }
+
+    .informe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0;
+    }
+  }
+</style>

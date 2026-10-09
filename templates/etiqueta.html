@@ -1,0 +1,115 @@
+<template id="etiqueta-template">
+  <article class="etq">
+    <div class="etq__qr"><img data-etq-qr alt=""></div>
+    <div class="etq__data">
+      <p class="etq__punto" data-etq-nombre></p>
+      <p class="etq__ubicacion" data-etq-ubicacion></p>
+      <p class="etq__id" data-etq-id></p>
+    </div>
+  </article>
+</template>
+
+<style id="etiqueta-styles">
+  .etiqueta-sheet {
+    --etq-cols: 3;
+    display: grid;
+    grid-template-columns: repeat(var(--etq-cols), minmax(0, 1fr));
+    gap: 6mm;
+    padding: 6mm;
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .etq {
+    display: flex;
+    gap: 3mm;
+    align-items: center;
+    padding: 3mm;
+    background-color: #ffffff;
+    border: 1px solid #94a3b8;
+    border-radius: 2mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .etq__qr {
+    flex: none;
+  }
+
+  .etq__qr img {
+    display: block;
+    width: 22mm;
+    height: 22mm;
+    image-rendering: pixelated;
+  }
+
+  .etq__data {
+    min-width: 0;
+  }
+
+  .etq__punto {
+    margin: 0 0 1mm;
+    font-size: 3.4mm;
+    font-weight: 700;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .etq__ubicacion {
+    margin: 0 0 1mm;
+    font-size: 3mm;
+    line-height: 1.15;
+    color: #475569;
+    overflow-wrap: anywhere;
+  }
+
+  .etq__id {
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 2.8mm;
+    letter-spacing: 0.02em;
+    color: #0f172a;
+    overflow-wrap: anywhere;
+  }
+
+  .etq-empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 12mm 0;
+    text-align: center;
+    font-size: 3.4mm;
+    color: #64748b;
+  }
+
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+
+    .etiqueta-sheet,
+    .etiqueta-sheet * {
+      visibility: visible;
+    }
+
+    .etiqueta-sheet {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .etq-empty {
+      display: none;
+    }
+  }
+</style>
