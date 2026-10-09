@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Herramientas para redes, cableado y ponchado. 100% frontend.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="ntw-version" content="1.0.1">
+  <meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1620" media="(prefers-color-scheme: dark)">
+  <title>Net Tools Web</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Net Tools">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/layout.css">
+
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('nt.theme');
+        var isDark = stored
+          ? stored === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', isDark);
+      } catch (err) {
+        /* localStorage no disponible: se usa el tema claro por defecto */
+      }
+    })();
+  </script>
+
+  <style>
+    .pwa-update {
+      position: fixed;
+      bottom: var(--space-4);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-family: var(--font-sans);
+      font-size: var(--fs-sm);
+      z-index: 1000;
+      max-width: min(94vw, 30rem);
+    }
+    .pwa-update[hidden] { display: none; }
+    .pwa-update__btn {
+      background: var(--color-primary);
+      color: var(--color-primary-contrast);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      font-weight: var(--fw-medium);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .pwa-update__btn:hover { background: var(--color-primary-hover); }
+    .pwa-update__btn:disabled { opacity: 0.6; cursor: default; }
+    .pwa-update__close {
+      background: none;
+      border: none;
+      color: var(--color-text-muted);
+      font-size: var(--fs-lg);
+      line-height: 1;
+      cursor: pointer;
+      padding: var(--space-1) var(--space-2);
+    }
+    .pwa-update__close:hover { color: var(--color-text); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#app">Saltar al contenido</a>
+
+  <div class="app">
+    <header class="topbar">
+      <button id="menu-toggle" class="icon-button menu-toggle" type="button"
+              aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <a class="brand" href="#/dashboard">Net&nbsp;Tools&nbsp;Web</a>
+
+      <button id="theme-toggle" class="icon-button theme-toggle" type="button"
+              aria-label="Cambiar tema" aria-pressed="false">
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+        </svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" fill="currentColor"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <aside id="sidebar" class="sidebar" aria-label="Menú principal">
+      <nav class="nav" aria-label="Secciones">
+        <ul class="nav__list" role="list">
+          <li><a class="nav__link" data-route="dashboard" href="#/dashboard">Dashboard</a></li>
+          <li><a class="nav__link" data-route="ponchado" href="#/ponchado">Ponchado</a></li>
+          <li><a class="nav__link" data-route="calculadoras" href="#/calculadoras">Calculadoras</a></li>
+          <li><a class="nav__link" data-route="planos" href="#/planos">Planos</a></li>
+          <li><a class="nav__link" data-route="inventario" href="#/inventario">Inventario</a></li>
+          <li><a class="nav__link" data-route="conexiones" href="#/conexiones">Conexiones</a></li>
+          <li><a class="nav__link" data-route="etiquetas" href="#/etiquetas">Etiquetas</a></li>
+          <li><a class="nav__link" data-route="pruebas" href="#/pruebas">Pruebas</a></li>
+          <li><a class="nav__link" data-route="estandares" href="#/estandares">Estándares</a></li>
+          <li><a class="nav__link" data-route="diagnostico" href="#/diagnostico">Diagnóstico</a></li>
+          <li><a class="nav__link" data-route="configuracion" href="#/configuracion">Configuración</a></li>
+          <li><a class="nav__link" data-route="ayuda" href="#/ayuda">Ayuda</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div id="backdrop" class="backdrop"></div>
+
+    <main id="app" class="content" tabindex="-1"></main>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+
+  <div id="pwa-update" class="pwa-update" hidden>
+    <span>Nueva versión disponible</span>
+    <button id="pwa-update-btn" class="pwa-update__btn" type="button">Actualizar ahora</button>
+    <button id="pwa-update-close" class="pwa-update__close" type="button" aria-label="Cerrar">×</button>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        var updateWorker = null;
+        var userRequestedUpdate = false;
+
+        function showUpdateBanner(worker) {
+          updateWorker = worker;
+          var banner = document.getElementById('pwa-update');
+          if (banner) banner.hidden = false;
+        }
+
+        navigator.serviceWorker.register('service-worker.js')
+          .then(function (reg) {
+            if (reg.waiting && navigator.serviceWorker.controller) {
+              showUpdateBanner(reg.waiting);
+              return;
+            }
+            reg.addEventListener('updatefound', function () {
+              var newWorker = reg.installing;
+              if (!newWorker) return;
+              newWorker.addEventListener('statechange', function () {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showUpdateBanner(newWorker);
+                }
+              });
+            });
+          })
+          .catch(function (err) {
+            console.error('[pwa] No se pudo registrar el service worker:', err);
+          });
+
+        var updateBtn = document.getElementById('pwa-update-btn');
+        if (updateBtn) {
+          updateBtn.addEventListener('click', function () {
+            if (!updateWorker) return;
+            userRequestedUpdate = true;
+            updateWorker.postMessage({ type: 'SKIP_WAITING' });
+            updateBtn.disabled = true;
+          });
+        }
+
+        var updateClose = document.getElementById('pwa-update-close');
+        if (updateClose) {
+          updateClose.addEventListener('click', function () {
+            var banner = document.getElementById('pwa-update');
+            if (banner) banner.hidden = true;
+            updateWorker = null;
+          });
+        }
+
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (userRequestedUpdate) {
+            window.location.reload();
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
