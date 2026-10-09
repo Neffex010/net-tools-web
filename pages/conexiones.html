@@ -1,0 +1,278 @@
+<section class="page" data-page="conexiones">
+  <style>
+    [data-page="conexiones"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="conexiones"] .page-head {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    [data-page="conexiones"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="conexiones"] h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="conexiones"] .lead {
+      max-width: 65ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="conexiones"] .card {
+      display: grid;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="conexiones"] .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="conexiones"] .field {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    [data-page="conexiones"] .field--wide {
+      grid-column: 1 / -1;
+    }
+
+    [data-page="conexiones"] .field label {
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="conexiones"] input,
+    [data-page="conexiones"] select,
+    [data-page="conexiones"] textarea {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast);
+    }
+
+    [data-page="conexiones"] textarea {
+      min-height: 4.5rem;
+      resize: vertical;
+    }
+
+    [data-page="conexiones"] input:focus,
+    [data-page="conexiones"] select:focus,
+    [data-page="conexiones"] textarea:focus {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="conexiones"] .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    [data-page="conexiones"] .btn {
+      padding: var(--space-2) var(--space-4);
+      font-weight: var(--fw-medium);
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    [data-page="conexiones"] .btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="conexiones"] .btn--primary {
+      color: var(--color-primary-contrast);
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    [data-page="conexiones"] .btn--sm {
+      padding: 4px var(--space-2);
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="conexiones"] .summary {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="conexiones"] .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="conexiones"] .table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="conexiones"] .table th,
+    [data-page="conexiones"] .table td {
+      padding: var(--space-2) var(--space-3);
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="conexiones"] .table thead th {
+      position: sticky;
+      top: 0;
+      background-color: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-weight: var(--fw-medium);
+      z-index: 1;
+    }
+
+    [data-page="conexiones"] .table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    [data-page="conexiones"] .notes {
+      max-width: 22ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="conexiones"] .row-actions {
+      display: flex;
+      gap: var(--space-1);
+      white-space: nowrap;
+    }
+
+    [data-page="conexiones"] .empty {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="conexiones"] .error {
+      font-size: var(--fs-sm);
+      color: var(--color-danger);
+    }
+
+    [data-page="conexiones"] .message {
+      min-height: 1.25rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="conexiones"] .message.is-ok {
+      color: var(--color-success);
+    }
+
+    [data-page="conexiones"] .message.is-bad {
+      color: var(--color-danger);
+    }
+
+    [data-page="conexiones"] .muted {
+      color: var(--color-text-muted);
+    }
+
+    @media (min-width: 720px) {
+      [data-page="conexiones"] .card {
+        padding: var(--space-5);
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Conexiones</h1>
+    <p class="lead">Documenta el enlace puerto a puerto: punto de red del Inventario, switch y patch panel.</p>
+  </header>
+
+  <section class="card" aria-labelledby="cxn-form-title">
+    <h2 id="cxn-form-title">Nueva conexión</h2>
+    <form data-cxn-form novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="cxn-punto">Punto de red</label>
+          <select id="cxn-punto" data-cxn-punto required>
+            <option value="">— Seleccionar punto de red —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cxn-switch">Switch</label>
+          <input id="cxn-switch" data-cxn-switch type="text" autocomplete="off" placeholder="Ej. SW-01">
+        </div>
+        <div class="field">
+          <label for="cxn-puerto-switch">Puerto del switch</label>
+          <input id="cxn-puerto-switch" data-cxn-puerto-switch type="text" autocomplete="off" placeholder="Ej. Gi1/0/1">
+        </div>
+        <div class="field">
+          <label for="cxn-panel">Patch panel</label>
+          <input id="cxn-panel" data-cxn-panel type="text" autocomplete="off" placeholder="Ej. PP-A">
+        </div>
+        <div class="field">
+          <label for="cxn-puerto-panel">Puerto del panel</label>
+          <input id="cxn-puerto-panel" data-cxn-puerto-panel type="text" autocomplete="off" placeholder="Ej. 1">
+        </div>
+        <div class="field">
+          <label for="cxn-cable">Cable / etiqueta</label>
+          <input id="cxn-cable" data-cxn-cable type="text" autocomplete="off" placeholder="Ej. C-001">
+        </div>
+        <div class="field field--wide">
+          <label for="cxn-notas">Notas</label>
+          <textarea id="cxn-notas" data-cxn-notas placeholder="Detalles del enlace..."></textarea>
+        </div>
+      </div>
+      <p class="error" data-cxn-form-error hidden></p>
+      <div class="actions">
+        <button type="submit" class="btn btn--primary" data-cxn-submit>Agregar conexión</button>
+        <button type="button" class="btn" data-cxn-cancel hidden>Cancelar edición</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="cxn-list-title">
+    <h2 id="cxn-list-title">Conexiones registradas</h2>
+    <div class="actions">
+      <span class="summary" data-cxn-summary aria-live="polite"></span>
+      <button type="button" class="btn" data-cxn-export style="margin-inline-start:auto">Exportar JSON</button>
+      <button type="button" class="btn" data-cxn-csv>Exportar CSV</button>
+      <button type="button" class="btn" data-cxn-clear>Vaciar</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <caption class="muted" style="text-align:left;padding:0 0 var(--space-2)">Enlaces punto a puerto</caption>
+        <thead>
+          <tr>
+            <th scope="col">Punto de red</th>
+            <th scope="col">Switch</th>
+            <th scope="col">Patch panel</th>
+            <th scope="col">Cable</th>
+            <th scope="col">Notas</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody data-cxn-body></tbody>
+      </table>
+    </div>
+
+    <p class="empty" data-cxn-empty hidden></p>
+    <p class="message" data-cxn-message role="status" aria-live="polite"></p>
+  </section>
+</section>

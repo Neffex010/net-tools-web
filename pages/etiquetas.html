@@ -1,0 +1,236 @@
+<section class="page" data-page="etiquetas">
+  <style>
+    [data-page="etiquetas"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="etiquetas"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="etiquetas"] h3 {
+      margin-bottom: var(--space-2);
+      font-size: var(--fs-lg);
+    }
+
+    [data-page="etiquetas"] .lead {
+      max-width: 70ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="etiquetas"] .card {
+      display: grid;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="etiquetas"] .card h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="etiquetas"] .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="etiquetas"] .field {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    [data-page="etiquetas"] .field label {
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="etiquetas"] input,
+    [data-page="etiquetas"] select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="etiquetas"] .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    [data-page="etiquetas"] .btn {
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    [data-page="etiquetas"] .btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="etiquetas"] .btn--primary {
+      color: var(--color-primary-contrast);
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    [data-page="etiquetas"] .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: end;
+      justify-content: space-between;
+    }
+
+    [data-page="etiquetas"] .count {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="etiquetas"] .list {
+      display: grid;
+      gap: var(--space-1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    [data-page="etiquetas"] .list li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-1) 0;
+      font-size: var(--fs-sm);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="etiquetas"] .list li:last-child {
+      border-bottom: 0;
+    }
+
+    [data-page="etiquetas"] .list .grow {
+      flex: 1;
+    }
+
+    [data-page="etiquetas"] .list .btn {
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+    }
+
+    [data-page="etiquetas"] .sheet-wrap {
+      overflow: auto;
+      max-height: 62vh;
+      padding: var(--space-3);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="etiquetas"] .message {
+      min-height: 1.25rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="etiquetas"] .message.is-ok {
+      color: var(--color-success);
+    }
+
+    [data-page="etiquetas"] .message.is-bad {
+      color: var(--color-danger);
+    }
+
+    [data-page="etiquetas"] .muted {
+      color: var(--color-text-muted);
+    }
+
+    @media (min-width: 720px) {
+      [data-page="etiquetas"] .card {
+        padding: var(--space-5);
+      }
+    }
+
+    @media print {
+      [data-page="etiquetas"] .sheet-wrap {
+        overflow: visible;
+        max-height: none;
+        padding: 0;
+        border: 0;
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Etiquetas QR</h1>
+    <p class="lead">Genera etiquetas para cada punto de red con su código QR. Ajusta las columnas por hoja e imprime.</p>
+  </header>
+
+  <section class="card" aria-labelledby="etq-form-title">
+    <h2 id="etq-form-title">Nueva etiqueta</h2>
+    <form data-etq-form novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="etq-nombre">Nombre del punto</label>
+          <input id="etq-nombre" data-etq-nombre type="text" autocomplete="off" placeholder="Ej. P-001" required>
+        </div>
+        <div class="field">
+          <label for="etq-ubicacion">Ubicación</label>
+          <input id="etq-ubicacion" data-etq-ubicacion type="text" autocomplete="off" placeholder="Ej. Oficina 204">
+        </div>
+        <div class="field">
+          <label for="etq-id">ID</label>
+          <input id="etq-id" data-etq-id type="text" autocomplete="off" placeholder="Automático si se deja vacío">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn btn--primary" data-etq-add>Agregar etiqueta</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="etq-list-title">
+    <h2 id="etq-list-title">Etiquetas</h2>
+    <div class="toolbar">
+      <div class="field">
+        <label for="etq-cols">Etiquetas por fila</label>
+        <select id="etq-cols" data-etq-cols>
+          <option value="2">2 columnas</option>
+          <option value="3" selected>3 columnas</option>
+          <option value="4">4 columnas</option>
+        </select>
+      </div>
+      <div class="actions">
+        <span class="count" data-etq-count>0 etiquetas</span>
+        <button type="button" class="btn" data-etq-clear>Vaciar</button>
+        <button type="button" class="btn btn--primary" data-etq-print>Imprimir</button>
+      </div>
+    </div>
+    <ul class="list" data-etq-list></ul>
+    <p class="message" data-etq-message role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="card" aria-labelledby="etq-sheet-title">
+    <h2 id="etq-sheet-title">Vista previa de la hoja</h2>
+    <div class="sheet-wrap">
+      <div class="etiqueta-sheet" data-etq-sheet></div>
+    </div>
+  </section>
+</section>

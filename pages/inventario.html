@@ -1,0 +1,347 @@
+<section class="page" data-page="inventario">
+  <style>
+    /* Estilos específicos de la vista Inventario (autocontenidos y con ámbito). */
+    [data-page="inventario"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="inventario"] .page-head {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    [data-page="inventario"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="inventario"] .lead {
+      max-width: 65ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] .card {
+      display: grid;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="inventario"] .card h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="inventario"] .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="inventario"] .field {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    [data-page="inventario"] .field--wide {
+      grid-column: 1 / -1;
+    }
+
+    [data-page="inventario"] .field label {
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] input,
+    [data-page="inventario"] select,
+    [data-page="inventario"] textarea {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast);
+    }
+
+    [data-page="inventario"] textarea {
+      min-height: 4.5rem;
+      resize: vertical;
+    }
+
+    [data-page="inventario"] input:focus,
+    [data-page="inventario"] select:focus,
+    [data-page="inventario"] textarea:focus {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="inventario"] .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    [data-page="inventario"] .btn {
+      padding: var(--space-2) var(--space-4);
+      font-weight: var(--fw-medium);
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    [data-page="inventario"] .btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="inventario"] .btn--primary {
+      color: var(--color-primary-contrast);
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    [data-page="inventario"] .btn--danger {
+      color: var(--color-danger);
+      border-color: var(--color-danger);
+      background-color: transparent;
+    }
+
+    [data-page="inventario"] .btn--sm {
+      padding: 4px var(--space-2);
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="inventario"] .toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="inventario"] .toolbar .actions {
+      grid-column: 1 / -1;
+    }
+
+    [data-page="inventario"] .summary {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="inventario"] .table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="inventario"] .table th,
+    [data-page="inventario"] .table td {
+      padding: var(--space-2) var(--space-3);
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="inventario"] .table thead th {
+      position: sticky;
+      top: 0;
+      background-color: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-weight: var(--fw-medium);
+      z-index: 1;
+    }
+
+    [data-page="inventario"] .table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    [data-page="inventario"] .notes {
+      max-width: 24ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] .row-actions {
+      display: flex;
+      gap: var(--space-1);
+      white-space: nowrap;
+    }
+
+    [data-page="inventario"] .badge {
+      display: inline-block;
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+
+    [data-page="inventario"] .badge--pendiente {
+      color: var(--color-warning);
+      background-color: rgba(232, 147, 12, 0.16);
+    }
+
+    [data-page="inventario"] .badge--tendido {
+      color: var(--color-primary);
+      background-color: var(--color-active);
+    }
+
+    [data-page="inventario"] .badge--ponchado {
+      color: var(--color-accent);
+      background-color: rgba(18, 184, 134, 0.16);
+    }
+
+    [data-page="inventario"] .badge--probado {
+      color: var(--color-success);
+      background-color: rgba(47, 158, 68, 0.16);
+    }
+
+    [data-page="inventario"] .empty,
+    [data-page="inventario"] .error {
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="inventario"] .empty {
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] .error {
+      color: var(--color-danger);
+    }
+
+    [data-page="inventario"] .message {
+      min-height: 1.25rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] .message.is-ok {
+      color: var(--color-success);
+    }
+
+    [data-page="inventario"] .message.is-bad {
+      color: var(--color-danger);
+    }
+
+    [data-page="inventario"] .muted {
+      color: var(--color-text-muted);
+    }
+
+    [data-page="inventario"] .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 720px) {
+      [data-page="inventario"] .card {
+        padding: var(--space-5);
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Inventario</h1>
+    <p class="lead">Registra y da seguimiento a los puntos de red: pendiente, tendido, ponchado y probado.</p>
+  </header>
+
+  <section class="card" aria-labelledby="inv-form-title">
+    <h2 id="inv-form-title">Agregar punto de red</h2>
+    <form data-inv-form novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="inv-nombre">Nombre del punto</label>
+          <input id="inv-nombre" data-inv-nombre type="text" autocomplete="off" placeholder="Ej. P-001" required>
+        </div>
+        <div class="field">
+          <label for="inv-ubicacion">Ubicación</label>
+          <input id="inv-ubicacion" data-inv-ubicacion type="text" autocomplete="off" placeholder="Ej. Oficina 204">
+        </div>
+        <div class="field">
+          <label for="inv-estado">Estado</label>
+          <select id="inv-estado" data-inv-estado>
+            <option value="pendiente">Pendiente</option>
+            <option value="tendido">Tendido</option>
+            <option value="ponchado">Ponchado</option>
+            <option value="probado">Probado</option>
+          </select>
+        </div>
+        <div class="field field--wide">
+          <label for="inv-notas">Notas</label>
+          <textarea id="inv-notas" data-inv-notas placeholder="Detalles del tendido, longitud, incidencias..."></textarea>
+        </div>
+      </div>
+      <p class="error" data-inv-form-error hidden></p>
+      <div class="actions">
+        <button type="submit" class="btn btn--primary" data-inv-submit>Agregar punto</button>
+        <button type="button" class="btn" data-inv-cancel hidden>Cancelar edición</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="inv-list-title">
+    <h2 id="inv-list-title">Puntos registrados</h2>
+    <div class="toolbar">
+      <div class="field">
+        <label for="inv-buscar">Buscar</label>
+        <input id="inv-buscar" data-inv-search type="search" autocomplete="off" placeholder="Nombre o ubicación">
+      </div>
+      <div class="field">
+        <label for="inv-filtro">Filtrar por estado</label>
+        <select id="inv-filtro" data-inv-filter>
+          <option value="">Todos los estados</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="tendido">Tendido</option>
+          <option value="ponchado">Ponchado</option>
+          <option value="probado">Probado</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" data-inv-export>Exportar JSON</button>
+        <button type="button" class="btn" data-inv-csv>Exportar CSV</button>
+        <button type="button" class="btn" data-inv-import>Importar JSON</button>
+        <input type="file" accept=".json,application/json" data-inv-file hidden>
+      </div>
+    </div>
+
+    <p class="summary" data-inv-summary aria-live="polite"></p>
+
+    <div class="table-wrap">
+      <table class="table">
+        <caption class="visually-hidden">Listado de puntos de red</caption>
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Ubicación</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Notas</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody data-inv-body></tbody>
+      </table>
+    </div>
+
+    <p class="empty" data-inv-empty hidden></p>
+    <p class="message" data-inv-message role="status" aria-live="polite"></p>
+  </section>
+</section>

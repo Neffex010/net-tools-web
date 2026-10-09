@@ -1,0 +1,301 @@
+<section class="page" data-page="estandares">
+  <style>
+    /* Estilos específicos de la vista Estándares (autocontenidos y con ámbito). */
+    [data-page="estandares"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="estandares"] .page-head {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    [data-page="estandares"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="estandares"] .lead {
+      max-width: 70ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .card {
+      display: grid;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="estandares"] .card h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="estandares"] .field {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    [data-page="estandares"] .field label {
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] input {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast);
+    }
+
+    [data-page="estandares"] input:focus {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="estandares"] .normas {
+      display: grid;
+      gap: var(--space-3);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    [data-page="estandares"] .norma {
+      display: grid;
+      gap: var(--space-1);
+      padding: var(--space-3);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="estandares"] .norma__head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    [data-page="estandares"] .norma__code {
+      font-family: var(--font-mono);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
+      color: var(--color-primary);
+    }
+
+    [data-page="estandares"] .norma__name {
+      font-weight: var(--fw-medium);
+    }
+
+    [data-page="estandares"] .norma__scope {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .badge {
+      display: inline-block;
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+
+    [data-page="estandares"] .badge--vigente {
+      color: var(--color-success);
+      background-color: rgba(47, 158, 68, 0.16);
+    }
+
+    [data-page="estandares"] .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="estandares"] .table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="estandares"] .table th,
+    [data-page="estandares"] .table td {
+      padding: var(--space-2) var(--space-3);
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="estandares"] .table thead th {
+      position: sticky;
+      top: 0;
+      background-color: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-weight: var(--fw-medium);
+      z-index: 1;
+    }
+
+    [data-page="estandares"] .table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    [data-page="estandares"] .mono {
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    [data-page="estandares"] .glosario {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    [data-page="estandares"] .glosario__grupo h3 {
+      margin-bottom: var(--space-2);
+      font-size: var(--fs-lg);
+      color: var(--color-primary);
+    }
+
+    [data-page="estandares"] .glosario__lista {
+      display: grid;
+      gap: var(--space-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    [data-page="estandares"] .glosario__item {
+      padding: var(--space-2) var(--space-3);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="estandares"] .glosario__term {
+      font-weight: var(--fw-medium);
+    }
+
+    [data-page="estandares"] .glosario__def {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .summary {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .empty,
+    [data-page="estandares"] .error {
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="estandares"] .empty {
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .error {
+      color: var(--color-danger);
+    }
+
+    [data-page="estandares"] .message {
+      min-height: 1.25rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .muted {
+      color: var(--color-text-muted);
+    }
+
+    [data-page="estandares"] .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 720px) {
+      [data-page="estandares"] .card {
+        padding: var(--space-5);
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Estándares</h1>
+    <p class="lead" data-est-resumen>Normas TIA/EIA-568, categorías de cable de par trenzado, distancias máximas y glosario de términos.</p>
+  </header>
+
+  <p class="error" data-est-error hidden></p>
+  <p class="message" data-est-status role="status" aria-live="polite"></p>
+
+  <section class="card" aria-labelledby="est-normas-title">
+    <h2 id="est-normas-title">Normas TIA/EIA-568 y relacionadas</h2>
+    <ul class="normas" data-est-normas></ul>
+  </section>
+
+  <section class="card" aria-labelledby="est-cat-title">
+    <h2 id="est-cat-title">Categorías de cable</h2>
+    <div class="table-wrap">
+      <table class="table">
+        <caption class="visually-hidden">Categorías de cable de par trenzado</caption>
+        <thead>
+          <tr>
+            <th scope="col">Categoría</th>
+            <th scope="col">Clase ISO</th>
+            <th scope="col">Ancho de banda</th>
+            <th scope="col">Frecuencia</th>
+            <th scope="col">Distancia</th>
+            <th scope="col">Uso</th>
+          </tr>
+        </thead>
+        <tbody data-est-categorias></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="est-dist-title">
+    <h2 id="est-dist-title">Distancias máximas</h2>
+    <div class="table-wrap">
+      <table class="table">
+        <caption class="visually-hidden">Distancias máximas recomendadas</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tramo</th>
+            <th scope="col">Máximo</th>
+            <th scope="col">Detalle</th>
+          </tr>
+        </thead>
+        <tbody data-est-distancias></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="est-glos-title">
+    <h2 id="est-glos-title">Glosario</h2>
+    <div class="field">
+      <label for="est-glosario-search">Buscar término o definición</label>
+      <input id="est-glosario-search" data-est-glosario-search type="search" autocomplete="off" placeholder="Ej. NEXT, RJ-45, atenuación">
+    </div>
+    <p class="summary" data-est-glosario-summary aria-live="polite"></p>
+    <div class="glosario" data-est-glosario></div>
+    <p class="empty" data-est-glosario-empty hidden></p>
+  </section>
+</section>

@@ -1,0 +1,339 @@
+<section class="page" data-page="pruebas">
+  <style>
+    [data-page="pruebas"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="pruebas"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="pruebas"] .lead {
+      max-width: 70ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="pruebas"] .card {
+      display: grid;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="pruebas"] .card h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="pruebas"] .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="pruebas"] .field {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    [data-page="pruebas"] .field label {
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="pruebas"] input,
+    [data-page="pruebas"] select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      font: inherit;
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="pruebas"] .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    [data-page="pruebas"] .btn {
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    [data-page="pruebas"] .btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="pruebas"] .btn--primary {
+      color: var(--color-primary-contrast);
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    [data-page="pruebas"] .btn--sm {
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+    }
+
+    [data-page="pruebas"] .hint {
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="pruebas"] .hint strong {
+      color: var(--color-text);
+    }
+
+    [data-page="pruebas"] .toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="pruebas"] .toolbar .actions {
+      grid-column: 1 / -1;
+    }
+
+    [data-page="pruebas"] .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="pruebas"] .table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="pruebas"] .table th,
+    [data-page="pruebas"] .table td {
+      padding: var(--space-2) var(--space-3);
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="pruebas"] .table thead th {
+      background-color: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-weight: var(--fw-medium);
+    }
+
+    [data-page="pruebas"] .table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    [data-page="pruebas"] .row-actions {
+      display: flex;
+      gap: var(--space-1);
+    }
+
+    [data-page="pruebas"] .badge {
+      display: inline-block;
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      border-radius: var(--radius-full);
+    }
+
+    [data-page="pruebas"] .badge--pass {
+      color: var(--color-success);
+      background-color: rgba(47, 158, 68, 0.16);
+    }
+
+    [data-page="pruebas"] .badge--fail {
+      color: var(--color-danger);
+      background-color: rgba(220, 38, 38, 0.14);
+    }
+
+    [data-page="pruebas"] .empty,
+    [data-page="pruebas"] .error {
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="pruebas"] .empty {
+      color: var(--color-text-muted);
+    }
+
+    [data-page="pruebas"] .error {
+      color: var(--color-danger);
+    }
+
+    [data-page="pruebas"] .message {
+      min-height: 1.25rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="pruebas"] .message.is-ok {
+      color: var(--color-success);
+    }
+
+    [data-page="pruebas"] .message.is-bad {
+      color: var(--color-danger);
+    }
+
+    [data-page="pruebas"] .muted {
+      color: var(--color-text-muted);
+    }
+
+    [data-page="pruebas"] .report-host {
+      overflow: auto;
+      max-height: 70vh;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="pruebas"] .report-host:empty {
+      border: 1px dashed var(--color-border);
+    }
+
+    @media (min-width: 720px) {
+      [data-page="pruebas"] .card {
+        padding: var(--space-5);
+      }
+    }
+
+    @media print {
+      [data-page="pruebas"] .report-host {
+        overflow: visible;
+        max-height: none;
+        border: 0;
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Pruebas y certificación</h1>
+    <p class="lead">Registra las mediciones por enlace (mapa de cableado, longitud, atenuación, NEXT y pérdida de retorno), filtra, exporta a CSV y genera el informe imprimible.</p>
+  </header>
+
+  <section class="card" aria-labelledby="pr-form-title">
+    <h2 id="pr-form-title">Nueva prueba</h2>
+    <form data-pr-form novalidate>
+      <div class="grid">
+        <div class="field">
+          <label for="pr-link">Enlace (ID)</label>
+          <input id="pr-link" data-pr-link type="text" autocomplete="off" placeholder="Ej. L-001" required>
+        </div>
+        <div class="field">
+          <label for="pr-mapa">Mapa de cableado</label>
+          <select id="pr-mapa" data-pr-mapa>
+            <option value="OK">OK</option>
+            <option value="FAIL">FAIL</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pr-longitud">Longitud (m)</label>
+          <input id="pr-longitud" data-pr-longitud type="number" step="0.1" min="0" placeholder="90">
+        </div>
+        <div class="field">
+          <label for="pr-atenuacion">Atenuación (dB)</label>
+          <input id="pr-atenuacion" data-pr-atenuacion type="number" step="0.1" min="0" placeholder="20.5">
+        </div>
+        <div class="field">
+          <label for="pr-next">NEXT (dB)</label>
+          <input id="pr-next" data-pr-next type="number" step="0.1" min="0" placeholder="35">
+        </div>
+        <div class="field">
+          <label for="pr-retorno">Pérdida de retorno (dB)</label>
+          <input id="pr-retorno" data-pr-retorno type="number" step="0.1" min="0" placeholder="18">
+        </div>
+        <div class="field">
+          <label for="pr-resultado">Resultado final</label>
+          <select id="pr-resultado" data-pr-resultado>
+            <option value="PASS">PASS (aprobado)</option>
+            <option value="FAIL">FAIL (fallido)</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint" data-pr-hint></p>
+      <p class="error" data-pr-form-error hidden></p>
+      <div class="actions">
+        <button type="submit" class="btn btn--primary" data-pr-submit>Agregar prueba</button>
+        <button type="button" class="btn" data-pr-cancel hidden>Cancelar edición</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card" aria-labelledby="pr-list-title">
+    <h2 id="pr-list-title">Pruebas registradas</h2>
+    <div class="toolbar">
+      <div class="field">
+        <label for="pr-buscar">Buscar enlace</label>
+        <input id="pr-buscar" data-pr-search type="search" autocomplete="off" placeholder="Ej. L-001">
+      </div>
+      <div class="field">
+        <label for="pr-filtro-resultado">Resultado</label>
+        <select id="pr-filtro-resultado" data-pr-filter-resultado>
+          <option value="">Todos</option>
+          <option value="PASS">PASS</option>
+          <option value="FAIL">FAIL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pr-filtro-mapa">Mapa</label>
+        <select id="pr-filtro-mapa" data-pr-filter-mapa>
+          <option value="">Todos</option>
+          <option value="OK">OK</option>
+          <option value="FAIL">FAIL</option>
+        </select>
+      </div>
+      <div class="actions">
+        <span class="muted" data-pr-summary></span>
+        <button type="button" class="btn" data-pr-csv>Exportar CSV</button>
+        <button type="button" class="btn btn--primary" data-pr-report>Generar informe</button>
+        <button type="button" class="btn" data-pr-clear>Vaciar</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <caption class="muted" style="text-align:left;padding:0 0 var(--space-2)">Certificación de enlaces</caption>
+        <thead>
+          <tr>
+            <th scope="col">Enlace</th>
+            <th scope="col">Mapa</th>
+            <th scope="col">Long. (m)</th>
+            <th scope="col">Aten. (dB)</th>
+            <th scope="col">NEXT (dB)</th>
+            <th scope="col">Retorno (dB)</th>
+            <th scope="col">Resultado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody data-pr-body></tbody>
+      </table>
+    </div>
+
+    <p class="empty" data-pr-empty hidden></p>
+    <p class="message" data-pr-message role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="card" aria-labelledby="pr-report-title">
+    <h2 id="pr-report-title">Informe</h2>
+    <p class="muted">Pulsa «Generar informe» para construir el documento y abrir el diálogo de impresión.</p>
+    <div class="report-host" data-pr-report-host></div>
+  </section>
+</section>

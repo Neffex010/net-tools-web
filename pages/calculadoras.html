@@ -1,0 +1,314 @@
+<section class="page" data-page="calculadoras">
+  <style>
+    /* Estilos específicos de la vista Calculadoras (autocontenidos y con ámbito). */
+    [data-page="calculadoras"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="calculadoras"] .page-head {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    [data-page="calculadoras"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="calculadoras"] .lead {
+      max-width: 65ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="calculadoras"] .card {
+      display: grid;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="calculadoras"] .card h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="calculadoras"] .hint {
+      max-width: 70ch;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="calculadoras"] .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    [data-page="calculadoras"] .field {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    [data-page="calculadoras"] .field label {
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="calculadoras"] input,
+    [data-page="calculadoras"] select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast);
+    }
+
+    [data-page="calculadoras"] input:focus,
+    [data-page="calculadoras"] select:focus {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="calculadoras"] .result {
+      display: grid;
+      gap: var(--space-1);
+      padding: var(--space-3);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="calculadoras"] .result__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      justify-content: space-between;
+      padding-block: 2px;
+      border-bottom: 1px dashed var(--color-border);
+    }
+
+    [data-page="calculadoras"] .result__row:last-child {
+      border-bottom: 0;
+    }
+
+    [data-page="calculadoras"] .result__label {
+      color: var(--color-text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="calculadoras"] .result__value {
+      font-weight: var(--fw-bold);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    [data-page="calculadoras"] .result__value.is-ok {
+      color: var(--color-success);
+    }
+
+    [data-page="calculadoras"] .result__value.is-warn {
+      color: var(--color-warning);
+    }
+
+    [data-page="calculadoras"] .result__value.is-bad {
+      color: var(--color-danger);
+    }
+
+    [data-page="calculadoras"] .status {
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      border-radius: var(--radius-md);
+      background-color: var(--color-surface-2);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="calculadoras"] .status.is-ok {
+      color: var(--color-success);
+      background-color: rgba(47, 158, 68, 0.12);
+    }
+
+    [data-page="calculadoras"] .status.is-warn {
+      color: var(--color-warning);
+      background-color: rgba(232, 147, 12, 0.14);
+    }
+
+    [data-page="calculadoras"] .status.is-bad {
+      color: var(--color-danger);
+      background-color: rgba(220, 38, 38, 0.12);
+    }
+
+    [data-page="calculadoras"] .error {
+      color: var(--color-danger);
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="calculadoras"] .specs {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    [data-page="calculadoras"] .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+
+    [data-page="calculadoras"] .table th,
+    [data-page="calculadoras"] .table td {
+      padding: var(--space-2);
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="calculadoras"] .table th {
+      color: var(--color-text-muted);
+      font-weight: var(--fw-medium);
+    }
+
+    [data-page="calculadoras"] .table td:last-child,
+    [data-page="calculadoras"] .table th:last-child {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    [data-page="calculadoras"] .pill {
+      display: inline-block;
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      border-radius: var(--radius-full);
+      background-color: var(--color-active);
+      color: var(--color-primary);
+    }
+
+    [data-page="calculadoras"] .pill--muted {
+      background-color: var(--color-surface-2);
+      color: var(--color-text-muted);
+    }
+
+    @media (min-width: 720px) {
+      [data-page="calculadoras"] .card {
+        padding: var(--space-5);
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Calculadoras</h1>
+    <p class="lead">Utilidades de direccionamiento, conversión de unidades, longitud de canal y estimación de materiales.</p>
+  </header>
+
+  <!-- CIDR -->
+  <section class="card" aria-labelledby="calc-cidr">
+    <h2 id="calc-cidr">Calculadora CIDR / subredes</h2>
+    <p class="hint">Introduce la IP y la máscara (prefijo como 24 o máscara decimal como 255.255.255.0).</p>
+    <div class="calc-grid">
+      <div class="field">
+        <label for="cidr-ip">Dirección IP</label>
+        <input id="cidr-ip" data-cidr-ip type="text" inputmode="decimal" autocomplete="off" value="192.168.1.10">
+      </div>
+      <div class="field">
+        <label for="cidr-mask">Máscara o prefijo</label>
+        <input id="cidr-mask" data-cidr-mask type="text" inputmode="decimal" autocomplete="off" value="/24">
+      </div>
+    </div>
+    <div class="result" data-cidr-result aria-live="polite"></div>
+  </section>
+
+  <!-- Metros / pies -->
+  <section class="card" aria-labelledby="calc-pies">
+    <h2 id="calc-pies">Conversión metros / pies</h2>
+    <p class="hint">Convierte longitudes de cable entre metros y pies.</p>
+    <div class="calc-grid">
+      <div class="field">
+        <label for="pies-valor">Valor</label>
+        <input id="pies-valor" data-pies-valor type="number" inputmode="decimal" step="any" min="0" value="100">
+      </div>
+      <div class="field">
+        <label for="pies-unidad">Unidad de origen</label>
+        <select id="pies-unidad" data-pies-unidad>
+          <option value="m">Metros (m)</option>
+          <option value="ft">Pies (ft)</option>
+        </select>
+      </div>
+    </div>
+    <div class="result" data-pies-result aria-live="polite"></div>
+  </section>
+
+  <!-- Longitud máxima -->
+  <section class="card" aria-labelledby="calc-longitud">
+    <h2 id="calc-longitud">Longitud máxima de cableado estructurado</h2>
+    <p class="hint">Regla del canal de 100 m: 90 m de cableado horizontal permanente + 10 m de latiguillos (patch cords).</p>
+    <div class="calc-grid">
+      <div class="field">
+        <label for="long-perm">Cableado horizontal permanente (m)</label>
+        <input id="long-perm" data-long-perm type="number" inputmode="decimal" step="any" min="0" value="90">
+      </div>
+      <div class="field">
+        <label for="long-patch">Latiguillos totales (m)</label>
+        <input id="long-patch" data-long-patch type="number" inputmode="decimal" step="any" min="0" value="10">
+      </div>
+    </div>
+    <div class="result" data-long-result aria-live="polite"></div>
+    <div class="status" data-long-status aria-live="polite"></div>
+  </section>
+
+  <!-- Materiales -->
+  <section class="card" aria-labelledby="calc-materiales">
+    <h2 id="calc-materiales">Cálculo de materiales</h2>
+    <p class="hint">Estimación de cable, jacks, faceplates, patch panels y latiguillos a partir del número de puntos de red.</p>
+    <div class="calc-grid">
+      <div class="field">
+        <label for="mat-puntos">Número de puntos</label>
+        <input id="mat-puntos" data-mat-puntos type="number" inputmode="numeric" step="1" min="0" value="24">
+      </div>
+      <div class="field">
+        <label for="mat-metros">Metros promedio por punto</label>
+        <input id="mat-metros" data-mat-metros type="number" inputmode="decimal" step="any" min="0" value="30">
+      </div>
+      <div class="field">
+        <label for="mat-margen">Margen de desperdicio (%)</label>
+        <input id="mat-margen" data-mat-margen type="number" inputmode="numeric" step="1" min="0" value="10">
+      </div>
+      <div class="field">
+        <label for="mat-puertos">Puertos por patch panel</label>
+        <select id="mat-puertos" data-mat-puertos>
+          <option value="24">24</option>
+          <option value="48">48</option>
+        </select>
+      </div>
+    </div>
+    <div class="result" data-mat-result aria-live="polite"></div>
+  </section>
+
+  <!-- Categorías -->
+  <section class="card" aria-labelledby="calc-categorias">
+    <h2 id="calc-categorias">Conversión entre categorías</h2>
+    <p class="hint">Compara Cat 5e, Cat 6 y Cat 6A y comprueba qué categorías cumplen tu velocidad y distancia.</p>
+    <div class="calc-grid">
+      <div class="field">
+        <label for="cat-categoria">Categoría</label>
+        <select id="cat-categoria" data-cat-categoria></select>
+      </div>
+      <div class="field">
+        <label for="cat-velocidad">Velocidad requerida</label>
+        <select id="cat-velocidad" data-cat-velocidad></select>
+      </div>
+      <div class="field">
+        <label for="cat-distancia">Distancia requerida (m)</label>
+        <input id="cat-distancia" data-cat-distancia type="number" inputmode="decimal" step="any" min="0" value="80">
+      </div>
+    </div>
+    <div class="specs" data-cat-specs></div>
+    <div class="result" data-cat-result aria-live="polite"></div>
+    <div class="status" data-cat-status aria-live="polite"></div>
+  </section>
+</section>

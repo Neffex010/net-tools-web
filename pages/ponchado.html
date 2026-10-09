@@ -1,0 +1,402 @@
+<section class="page" data-page="ponchado">
+  <style>
+    /* Estilos específicos de la vista Ponchado (autocontenidos y con ámbito). */
+    [data-page="ponchado"] {
+      display: grid;
+      gap: var(--space-5);
+    }
+
+    [data-page="ponchado"] .page-head {
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    [data-page="ponchado"] h1 {
+      font-size: var(--fs-2xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="ponchado"] .lead {
+      max-width: 65ch;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="ponchado"] .standard-switch {
+      display: inline-flex;
+      gap: var(--space-1);
+      width: fit-content;
+      padding: var(--space-1);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+    }
+
+    [data-page="ponchado"] .standard-switch__btn {
+      padding: var(--space-2) var(--space-5);
+      border-radius: var(--radius-full);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    [data-page="ponchado"] .standard-switch__btn.is-active {
+      background-color: var(--color-primary);
+      color: var(--color-primary-contrast);
+    }
+
+    [data-page="ponchado"] .card {
+      display: grid;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-page="ponchado"] .card h2 {
+      font-size: var(--fs-xl);
+      line-height: var(--lh-tight);
+    }
+
+    [data-page="ponchado"] .card p {
+      color: var(--color-text-muted);
+      max-width: 70ch;
+    }
+
+    [data-page="ponchado"] .steps {
+      display: grid;
+      gap: var(--space-2);
+      margin: 0;
+      padding-inline-start: var(--space-5);
+      list-style: decimal;
+      color: var(--color-text-muted);
+    }
+
+    /* Diagramas de colores */
+    [data-page="ponchado"] .wiring {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+    }
+
+    [data-page="ponchado"] .wire {
+      display: grid;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+    }
+
+    [data-page="ponchado"] .wire--strip {
+      grid-template-columns: 1.75rem 3rem minmax(0, 1fr);
+      padding: 4px 8px;
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+
+    [data-page="ponchado"] .wire__pin {
+      display: grid;
+      place-items: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+    }
+
+    [data-page="ponchado"] .wire__swatch {
+      display: block;
+      border: 1px solid rgba(0, 0, 0, 0.28);
+      border-radius: 3px;
+    }
+
+    [data-page="ponchado"] .wire--strip .wire__swatch {
+      width: 100%;
+      height: 1.5rem;
+    }
+
+    [data-page="ponchado"] .wire__name {
+      font-size: var(--fs-sm);
+      color: var(--color-text);
+    }
+
+    /* Vistas de conector / jack / panel: 8 celdas alineadas */
+    [data-page="ponchado"] .wiring--rj45,
+    [data-page="ponchado"] .wiring--keystone,
+    [data-page="ponchado"] .wiring--panel {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 4px;
+      padding: var(--space-3);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="ponchado"] .wire--rj45,
+    [data-page="ponchado"] .wire--keystone,
+    [data-page="ponchado"] .wire--panel {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 4px;
+    }
+
+    [data-page="ponchado"] .wire--rj45 .wire__name,
+    [data-page="ponchado"] .wire--keystone .wire__name,
+    [data-page="ponchado"] .wire--panel .wire__name {
+      display: none;
+    }
+
+    [data-page="ponchado"] .wire--rj45 .wire__pin,
+    [data-page="ponchado"] .wire--keystone .wire__pin,
+    [data-page="ponchado"] .wire--panel .wire__pin {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    [data-page="ponchado"] .wire--rj45 .wire__swatch {
+      width: 100%;
+      height: 4rem;
+    }
+
+    [data-page="ponchado"] .wire--keystone .wire__swatch {
+      width: 100%;
+      height: 3rem;
+    }
+
+    [data-page="ponchado"] .wire--panel .wire__swatch {
+      width: 100%;
+      height: 2.25rem;
+    }
+
+    /* Simulador */
+    [data-page="ponchado"] .sim {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    [data-page="ponchado"] .sim__source {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      min-height: 3.5rem;
+      padding: var(--space-2);
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-md);
+    }
+
+    [data-page="ponchado"] .chip {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      background-color: var(--color-surface);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: grab;
+      transition: border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    [data-page="ponchado"] .chip:hover {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="ponchado"] .chip__swatch {
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(0, 0, 0, 0.28);
+      border-radius: 6px;
+    }
+
+    [data-page="ponchado"] .chip.is-selected {
+      border-color: var(--color-primary);
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    [data-page="ponchado"] .chip.is-dragging {
+      opacity: 0.45;
+    }
+
+    [data-page="ponchado"] .sim__target {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-2);
+    }
+
+    [data-page="ponchado"] .sim-slot {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 74px;
+      background-color: var(--color-surface-2);
+      border: 2px dashed var(--color-border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    [data-page="ponchado"] .sim-slot.is-over {
+      border-color: var(--color-primary);
+      background-color: var(--color-hover);
+    }
+
+    [data-page="ponchado"] .sim-slot.is-correct {
+      border-style: solid;
+      border-color: var(--color-success);
+    }
+
+    [data-page="ponchado"] .sim-slot.is-wrong {
+      border-style: solid;
+      border-color: var(--color-danger);
+    }
+
+    [data-page="ponchado"] .sim-slot__pin {
+      position: absolute;
+      top: 4px;
+      left: 8px;
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="ponchado"] .sim-slot__drop {
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="ponchado"] .sim-slot.is-filled .sim-slot__drop {
+      display: none;
+    }
+
+    [data-page="ponchado"] .sim__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    [data-page="ponchado"] .btn {
+      padding: var(--space-2) var(--space-5);
+      font-weight: var(--fw-medium);
+      color: var(--color-text);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    [data-page="ponchado"] .btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    [data-page="ponchado"] .btn--primary {
+      color: var(--color-primary-contrast);
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    [data-page="ponchado"] .sim__feedback {
+      min-height: 1.25rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="ponchado"] .sim__feedback.is-success {
+      color: var(--color-success);
+    }
+
+    [data-page="ponchado"] .sim__feedback.is-error {
+      color: var(--color-danger);
+    }
+
+    [data-page="ponchado"] .sim__feedback.is-warning {
+      color: var(--color-warning);
+    }
+
+    [data-page="ponchado"] .load-error {
+      color: var(--color-danger);
+      font-size: var(--fs-sm);
+    }
+
+    @media (min-width: 720px) {
+      [data-page="ponchado"] .sim__target {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+      }
+
+      [data-page="ponchado"] .card {
+        padding: var(--space-5);
+      }
+    }
+  </style>
+
+  <header class="page-head">
+    <h1>Ponchado</h1>
+    <p class="lead">
+      Guías de color para cable UTP, ponchado de conectores y simulador interactivo.
+      Elige T568A o T568B y practica el orden correcto de los 8 hilos.
+    </p>
+  </header>
+
+  <div class="standard-switch" role="group" aria-label="Seleccionar estándar de ponchado">
+    <button type="button" class="standard-switch__btn" data-standard="a" aria-pressed="false">T568A</button>
+    <button type="button" class="standard-switch__btn" data-standard="b" aria-pressed="true">T568B</button>
+  </div>
+
+  <section class="card" aria-labelledby="titulo-t568a">
+    <h2 id="titulo-t568a">Estándar T568A</h2>
+    <p>Orden de los 8 hilos en el conector RJ45 (pin 1 a la izquierda, con el clip hacia abajo).</p>
+    <div data-diagram="t568a"></div>
+  </section>
+
+  <section class="card" aria-labelledby="titulo-t568b">
+    <h2 id="titulo-t568b">Estándar T568B</h2>
+    <p>El más usado en instalaciones nuevas. Mismo conector, distinto orden de pares.</p>
+    <div data-diagram="t568b"></div>
+  </section>
+
+  <section class="card" aria-labelledby="titulo-rj45">
+    <h2 id="titulo-rj45">Ponchado de RJ45 macho</h2>
+    <p>Vista del conector con la posición de cada color según el estándar seleccionado.</p>
+    <div data-view="rj45"></div>
+    <ol class="steps">
+      <li>Pela el cable unos 2&nbsp;cm sin dañar los hilos.</li>
+      <li>Destrenza y ordena los 8 hilos según el estándar elegido.</li>
+      <li>Recorta los hilos parejos y guíalos hasta el fondo del conector.</li>
+      <li>Inserta el RJ45 con el clip hacia abajo y verifica el orden.</li>
+      <li>Poncha con la crimpadora y comprueba continuidad con un tester.</li>
+    </ol>
+  </section>
+
+  <section class="card" aria-labelledby="titulo-keystone">
+    <h2 id="titulo-keystone">Jack keystone</h2>
+    <p>Los pares se distribuyen en dos filas (1-2-3-4 y 5-6-7-8) siguiendo la guía de color del propio jack.</p>
+    <div data-view="keystone"></div>
+    <p>Usa la guía impresa en el jack (A o B) y poncha cada hilo hasta el fondo del terminal con la herramienta de impacto 110.</p>
+  </section>
+
+  <section class="card" aria-labelledby="titulo-panel">
+    <h2 id="titulo-panel">Patch panel</h2>
+    <p>Cada puerto se poncha igual que un keystone. Mantén el mismo estándar en ambos extremos de la instalación.</p>
+    <div data-view="panel"></div>
+    <p>Documenta cada puerto, evita destrenzar en exceso y respeta la sección sin cubierta menor a 1,3&nbsp;cm.</p>
+  </section>
+
+  <section class="card" aria-labelledby="titulo-sim">
+    <h2 id="titulo-sim">Simulador de ponchado</h2>
+    <p>
+      Arrastra cada color a los pines del 1 al 8 en el orden correcto según el estándar seleccionado.
+      En pantallas táctiles, toca un color y luego el pin de destino.
+    </p>
+    <div class="sim" data-sim>
+      <div class="sim__source" data-sim-source aria-label="Colores disponibles"></div>
+      <div class="sim__target" data-sim-target role="list" aria-label="Pines del conector"></div>
+    </div>
+    <div class="sim__actions">
+      <button type="button" class="btn btn--primary" data-sim-check>Validar</button>
+      <button type="button" class="btn" data-sim-reset>Reiniciar</button>
+    </div>
+    <p class="sim__feedback" data-sim-feedback role="status" aria-live="polite"></p>
+  </section>
+</section>
