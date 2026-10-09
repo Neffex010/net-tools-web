@@ -1,0 +1,74 @@
+[
+  {
+    "pin": 1,
+    "clave": "blanco-verde",
+    "nombre": "Blanco/Verde",
+    "base": "#f5f5f5",
+    "raya": "#2fa84f",
+    "rayado": true,
+    "par": "Par 2 (verde)"
+  },
+  {
+    "pin": 2,
+    "clave": "verde",
+    "nombre": "Verde",
+    "base": "#2fa84f",
+    "raya": null,
+    "rayado": false,
+    "par": "Par 2 (verde)"
+  },
+  {
+    "pin": 3,
+    "clave": "blanco-naranja",
+    "nombre": "Blanco/Naranja",
+    "base": "#f5f5f5",
+    "raya": "#f28c28",
+    "rayado": true,
+    "par": "Par 3 (naranja)"
+  },
+  {
+    "pin": 4,
+    "clave": "azul",
+    "nombre": "Azul",
+    "base": "#2f6fd0",
+    "raya": null,
+    "rayado": false,
+    "par": "Par 1 (azul)"
+  },
+  {
+    "pin": 5,
+    "clave": "blanco-azul",
+    "nombre": "Blanco/Azul",
+    "base": "#f5f5f5",
+    "raya": "#2f6fd0",
+    "rayado": true,
+    "par": "Par 1 (azul)"
+  },
+  {
+    "pin": 6,
+    "clave": "naranja",
+    "nombre": "Naranja",
+    "base": "#f28c28",
+    "raya": null,
+    "rayado": false,
+    "par": "Par 3 (naranja)"
+  },
+  {
+    "pin": 7,
+    "clave": "blanco-marron",
+    "nombre": "Blanco/Marrón",
+    "base": "#f5f5f5",
+    "raya": "#6b4226",
+    "rayado": true,
+    "par": "Par 4 (marrón)"
+  },
+  {
+    "pin": 8,
+    "clave": "marron",
+    "nombre": "Marrón",
+    "base": "#6b4226",
+    "raya": null,
+    "rayado": false,
+    "par": "Par 4 (marrón)"
+  }
+]

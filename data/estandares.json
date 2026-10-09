@@ -1,0 +1,171 @@
+{
+  "titulo": "Estándares de cableado estructurado",
+  "resumen": "Referencias de las normas TIA/EIA-568, categorías de cable de par trenzado y distancias máximas recomendadas para cableado horizontal y backbone.",
+  "normas": [
+    {
+      "codigo": "ANSI/TIA-568",
+      "nombre": "Commercial Building Telecommunications Cabling Standard",
+      "alcance": "Cableado estructurado en edificios comerciales: cableado horizontal, backbone, área de trabajo y cuartos de telecomunicaciones.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-568.1",
+      "nombre": "Generic Telecommunications Cabling for Customer Premises",
+      "alcance": "Requisitos genéricos de cableado y topología para instalaciones de cliente.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-568.2",
+      "nombre": "Balanced Twisted-Pair Telecommunications Cabling and Components",
+      "alcance": "Cable de par trenzado balanceado, conectores, patch cords y ensayos de transmisión.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-568.3",
+      "nombre": "Optical Fiber Cabling and Components",
+      "alcance": "Fibra óptica multimodo y monomodo, conectores, adaptadores y ensayos.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-568.4",
+      "nombre": "Broadband Coaxial Cabling and Components",
+      "alcance": "Cableado coaxial de banda ancha (por ejemplo, CATV) y sus componentes.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-569",
+      "nombre": "Telecommunications Pathways and Spaces",
+      "alcance": "Rutas y espacios: canalizaciones, ductos, registros y cuartos de telecomunicaciones.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-606",
+      "nombre": "Administration Standard for Telecommunications Infrastructure",
+      "alcance": "Administración, etiquetado y documentación de la infraestructura de telecomunicaciones.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ANSI/TIA-607",
+      "nombre": "Generic Telecommunications Bonding and Grounding",
+      "alcance": "Puesta a tierra y unión (bonding) del sistema de telecomunicaciones.",
+      "estado": "Vigente"
+    },
+    {
+      "codigo": "ISO/IEC 11801",
+      "nombre": "Information technology — Generic cabling for customer premises",
+      "alcance": "Equivalente internacional al TIA/EIA-568; define clases de enlace (C, D, E, EA, F, FA).",
+      "estado": "Vigente"
+    }
+  ],
+  "categorias": [
+    {
+      "id": "cat3",
+      "nombre": "Categoría 3 (Cat 3)",
+      "clase": "Clase C",
+      "anchoBanda": "10 Mbps",
+      "frecuencia": "16 MHz",
+      "distancia": "100 m",
+      "pares": "4 pares",
+      "uso": "Voz y datos básicos. Obsoleta para datos.",
+      "norma": "TIA/EIA-568-B"
+    },
+    {
+      "id": "cat5",
+      "nombre": "Categoría 5 (Cat 5)",
+      "clase": "Clase D",
+      "anchoBanda": "100 Mbps",
+      "frecuencia": "100 MHz",
+      "distancia": "100 m",
+      "pares": "4 pares",
+      "uso": "Fast Ethernet (100BASE-TX). Reemplazada por Cat 5e.",
+      "norma": "TIA/EIA-568-A"
+    },
+    {
+      "id": "cat5e",
+      "nombre": "Categoría 5e (Cat 5e)",
+      "clase": "Clase D",
+      "anchoBanda": "1 Gbps",
+      "frecuencia": "100 MHz",
+      "distancia": "100 m",
+      "pares": "4 pares",
+      "uso": "Gigabit Ethernet (1000BASE-T). Estándar mínimo recomendado.",
+      "norma": "TIA/EIA-568-B"
+    },
+    {
+      "id": "cat6",
+      "nombre": "Categoría 6 (Cat 6)",
+      "clase": "Clase E",
+      "anchoBanda": "1 Gbps (10 Gbps hasta 55 m)",
+      "frecuencia": "250 MHz",
+      "distancia": "100 m (a 1 Gbps) · 55 m (a 10 Gbps)",
+      "pares": "4 pares",
+      "uso": "Gigabit y 10GBASE-T en distancias cortas.",
+      "norma": "TIA/EIA-568-B.2-1"
+    },
+    {
+      "id": "cat6a",
+      "nombre": "Categoría 6A (Cat 6a)",
+      "clase": "Clase EA",
+      "anchoBanda": "10 Gbps",
+      "frecuencia": "500 MHz",
+      "distancia": "100 m",
+      "pares": "4 pares",
+      "uso": "10GBASE-T completo en canal de 100 m. Blindaje habitualmente U/FTP o F/UTP.",
+      "norma": "TIA/EIA-568-B.2-10"
+    },
+    {
+      "id": "cat7",
+      "nombre": "Categoría 7 (Cat 7)",
+      "clase": "Clase F",
+      "anchoBanda": "10 Gbps",
+      "frecuencia": "600 MHz",
+      "distancia": "100 m",
+      "pares": "4 pares apantallados",
+      "uso": "No reconocida por TIA/EIA; común en instalaciones ISO/IEC con conectores GG45/TERA.",
+      "norma": "ISO/IEC 11801"
+    },
+    {
+      "id": "cat8",
+      "nombre": "Categoría 8 (Cat 8)",
+      "clase": "Clase I / II",
+      "anchoBanda": "25/40 Gbps",
+      "frecuencia": "2000 MHz",
+      "distancia": "30 m",
+      "pares": "4 pares apantallados",
+      "uso": "Centros de datos: 25GBASE-T y 40GBASE-T en enlaces cortos.",
+      "norma": "TIA/EIA-568-C.2-1"
+    }
+  ],
+  "distancias": [
+    {
+      "tipo": "Enlace permanente (Permanent Link)",
+      "maximo": "90 m",
+      "detalle": "Cableado horizontal fijo desde el panel de parcheo hasta la roseta, sin patch cords."
+    },
+    {
+      "tipo": "Canal (Channel)",
+      "maximo": "100 m",
+      "detalle": "Enlace permanente más los patch cords de ambos extremos."
+    },
+    {
+      "tipo": "Patch cord (cuarto de telecomunicaciones)",
+      "maximo": "5 m",
+      "detalle": "Patch cord que conecta el equipo activo al panel de parcheo."
+    },
+    {
+      "tipo": "Patch cord (área de trabajo)",
+      "maximo": "5 m",
+      "detalle": "Patch cord que conecta la roseta al equipo del usuario."
+    },
+    {
+      "tipo": "Backbone de cobre (vertical)",
+      "maximo": "90 m",
+      "detalle": "Cableado vertical entre el cuarto de telecomunicaciones y el cuarto principal."
+    },
+    {
+      "tipo": "Backbone de fibra óptica",
+      "maximo": "2000 m",
+      "detalle": "Depende del tipo de fibra (multimodo/monomodo) y de la aplicación."
+    }
+  ]
+}

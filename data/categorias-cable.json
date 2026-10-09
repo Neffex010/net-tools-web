@@ -1,0 +1,57 @@
+{
+  "unidadVelocidad": "Gbps",
+  "velocidades": [
+    { "gbps": 0.1, "nombre": "100 Mbps" },
+    { "gbps": 1, "nombre": "1 Gbps" },
+    { "gbps": 2.5, "nombre": "2.5 Gbps" },
+    { "gbps": 5, "nombre": "5 Gbps" },
+    { "gbps": 10, "nombre": "10 Gbps" }
+  ],
+  "categorias": [
+    {
+      "id": "cat5e",
+      "nombre": "Cat 5e",
+      "frecuenciaMHz": 100,
+      "norma": "TIA/EIA-568-C.2 · ISO 11801 Clase D",
+      "velocidadMaxGbps": 5,
+      "descripcion": "Cable UTP. Cableado Gigabit estándar y 2.5G/5G en tramos de hasta 100 m.",
+      "soporta": [
+        { "gbps": 0.1, "distanciaM": 100 },
+        { "gbps": 1, "distanciaM": 100 },
+        { "gbps": 2.5, "distanciaM": 100 },
+        { "gbps": 5, "distanciaM": 100 },
+        { "gbps": 10, "distanciaM": null }
+      ]
+    },
+    {
+      "id": "cat6",
+      "nombre": "Cat 6",
+      "frecuenciaMHz": 250,
+      "norma": "TIA/EIA-568-C.2 · ISO 11801 Clase E",
+      "velocidadMaxGbps": 10,
+      "descripcion": "Mejor relación señal/ruido que Cat 5e. 10GBASE-T hasta 55 m.",
+      "soporta": [
+        { "gbps": 0.1, "distanciaM": 100 },
+        { "gbps": 1, "distanciaM": 100 },
+        { "gbps": 2.5, "distanciaM": 100 },
+        { "gbps": 5, "distanciaM": 100 },
+        { "gbps": 10, "distanciaM": 55 }
+      ]
+    },
+    {
+      "id": "cat6a",
+      "nombre": "Cat 6A",
+      "frecuenciaMHz": 500,
+      "norma": "TIA/EIA-568-C.2 · ISO 11801 Clase EA",
+      "velocidadMaxGbps": 10,
+      "descripcion": "10GBASE-T a 100 m. Recomendado para instalaciones nuevas y troncales.",
+      "soporta": [
+        { "gbps": 0.1, "distanciaM": 100 },
+        { "gbps": 1, "distanciaM": 100 },
+        { "gbps": 2.5, "distanciaM": 100 },
+        { "gbps": 5, "distanciaM": 100 },
+        { "gbps": 10, "distanciaM": 100 }
+      ]
+    }
+  ]
+}

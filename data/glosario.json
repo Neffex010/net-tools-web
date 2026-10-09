@@ -1,0 +1,158 @@
+{
+  "titulo": "Glosario de redes y cableado",
+  "categorias": [
+    {
+      "nombre": "Cableado estructurado",
+      "terminos": [
+        {
+          "termino": "Cableado estructurado",
+          "definicion": "Sistema de cableado normalizado que integra voz, datos, video y control en una infraestructura única y administrable."
+        },
+        {
+          "termino": "Cableado horizontal",
+          "definicion": "Tramo que va del panel de parcheo en el cuarto de telecomunicaciones hasta la roseta del área de trabajo. Máximo 90 m."
+        },
+        {
+          "termino": "Backbone",
+          "definicion": "Cableado vertical o troncal que interconecta cuartos de telecomunicaciones, cuarto principal y entrada de servicios."
+        },
+        {
+          "termino": "Área de trabajo",
+          "definicion": "Espacio donde el usuario final conecta sus equipos a las rosetas de telecomunicaciones."
+        },
+        {
+          "termino": "Cuarto de telecomunicaciones",
+          "definicion": "Recinto que aloja los paneles de parcheo, switches y demás equipamiento de distribución de un piso."
+        },
+        {
+          "termino": "Roseta (outlet)",
+          "definicion": "Toma mural donde termina el cableado horizontal y se conecta el patch cord del usuario."
+        },
+        {
+          "termino": "Panel de parcheo (patch panel)",
+          "definicion": "Panel donde se terminan los cables del cableado horizontal y se interconectan con el equipo activo mediante patch cords."
+        },
+        {
+          "termino": "Patch cord",
+          "definicion": "Cable flexible con conectores en ambos extremos usado para interconectar equipos, paneles y rosetas."
+        },
+        {
+          "termino": "Rack (gabinete)",
+          "definicion": "Estructura normalizada donde se montan paneles, switches y equipos de telecomunicaciones."
+        }
+      ]
+    },
+    {
+      "nombre": "Conectores y medios",
+      "terminos": [
+        {
+          "termino": "RJ-45",
+          "definicion": "Conector de 8 posiciones y 8 contactos (8P8C) usado en cable de par trenzado para Ethernet."
+        },
+        {
+          "termino": "Par trenzado (UTP/STP)",
+          "definicion": "Cable con pares de conductores trenzados para reducir interferencias. UTP sin blindaje, STP/FTP con blindaje."
+        },
+        {
+          "termino": "T568A y T568B",
+          "definicion": "Dos estándares de asignación de colores para conectar los 8 conductores del RJ-45. No deben mezclarse en un mismo enlace."
+        },
+        {
+          "termino": "Cable cruzado (crossover)",
+          "definicion": "Cable con un extremo en T568A y otro en T568B, usado para conectar dispositivos del mismo tipo."
+        },
+        {
+          "termino": "Fibra óptica",
+          "definicion": "Medio de transmisión que transporta datos como pulsos de luz. Multimodo (distancias cortas) o monomodo (largas distancias)."
+        },
+        {
+          "termino": "Conector LC / SC",
+          "definicion": "Conectores de fibra óptica; LC es pequeño (small form factor) y SC de tamaño estándar con bloqueo por empuje."
+        }
+      ]
+    },
+    {
+      "nombre": "Redes y protocolos",
+      "terminos": [
+        {
+          "termino": "Ethernet",
+          "definicion": "Tecnología de red de área local (LAN) definida por IEEE 802.3 que opera en capa 2 del modelo OSI."
+        },
+        {
+          "termino": "IP",
+          "definicion": "Protocolo de Internet que direcciona y encamina paquetes entre redes (IPv4 e IPv6)."
+        },
+        {
+          "termino": "Máscara de subred / CIDR",
+          "definicion": "Notación que define el tamaño de una red. CIDR indica los bits de red, por ejemplo /24 = 255.255.255.0."
+        },
+        {
+          "termino": "VLAN",
+          "definicion": "Red de área local virtual que segmenta lógicamente una red física en dominios de difusión separados."
+        },
+        {
+          "termino": "DHCP",
+          "definicion": "Protocolo que asigna automáticamente direcciones IP, máscara, puerta de enlace y DNS a los dispositivos."
+        },
+        {
+          "termino": "DNS",
+          "definicion": "Sistema de nombres de dominio que traduce nombres legibles (por ejemplo, ejemplo.com) a direcciones IP."
+        },
+        {
+          "termino": "PoE",
+          "definicion": "Power over Ethernet: entrega energía eléctrica y datos por el mismo cable de par trenzado."
+        }
+      ]
+    },
+    {
+      "nombre": "Pruebas y certificación",
+      "terminos": [
+        {
+          "termino": "Certificación",
+          "definicion": "Conjunto de ensayos que verifican que un enlace cumple los parámetros de la categoría a la que pertenece."
+        },
+        {
+          "termino": "Mapa de cableado (wiremap)",
+          "definicion": "Prueba que verifica la continuidad y el orden correcto de los 8 conductores, detectando pares cruzados o abiertos."
+        },
+        {
+          "termino": "Atenuación",
+          "definicion": "Pérdida de potencia de la señal a lo largo del cable, medida en decibelios (dB). Aumenta con la frecuencia y la longitud."
+        },
+        {
+          "termino": "NEXT",
+          "definicion": "Near-End Crosstalk: interferencia entre pares medida en el extremo cercano. A mayor valor en dB, mejor."
+        },
+        {
+          "termino": "Pérdida de retorno",
+          "definicion": "Return Loss: energía reflejada por desadaptaciones de impedancia. Un valor alto indica mejor calidad del enlace."
+        },
+        {
+          "termino": "Tester de certificación",
+          "definicion": "Instrumento que mide atenuación, NEXT, pérdida de retorno y otros parámetros, y emite un informe PASS/FAIL."
+        }
+      ]
+    },
+    {
+      "nombre": "Herramientas",
+      "terminos": [
+        {
+          "termino": "Ponchadora (punch down)",
+          "definicion": "Herramienta que inserta y corta los conductores en los contactos IDC de paneles y rosetas."
+        },
+        {
+          "termino": "Crimpadora",
+          "definicion": "Herramienta que fija el conector RJ-45 a los conductores del cable de par trenzado."
+        },
+        {
+          "termino": "Probador de continuidad",
+          "definicion": "Dispositivo básico que comprueba la continuidad y el orden de los pares sin medir parámetros de transmisión."
+        },
+        {
+          "termino": "Trazador de cables (toner)",
+          "definicion": "Equipo que inyecta una señal en el cable para localizarlo e identificarlo entre muchos otros."
+        }
+      ]
+    }
+  ]
+}
