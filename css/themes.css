@@ -1,0 +1,54 @@
+/* Tema oscuro: se activa con la clase .dark en <html> (o <body>). */
+
+:root {
+  color-scheme: light;
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Superficies */
+  --color-bg: #0f1620;
+  --color-surface: #161f2b;
+  --color-surface-2: #1e2837;
+  --color-border: #2a3646;
+
+  /* Texto */
+  --color-text: #e6ecf3;
+  --color-text-muted: #9aa8ba;
+
+  /* Marca y estados */
+  --color-primary: #4d8dff;
+  --color-primary-hover: #6ba0ff;
+  --color-primary-contrast: #0b1220;
+  --color-accent: #2fd0a0;
+  --color-success: #51cf66;
+  --color-warning: #ffb84d;
+  --color-danger: #ff6b6b;
+
+  /* Interacción */
+  --color-overlay: rgba(3, 7, 14, 0.6);
+  --color-hover: rgba(77, 141, 255, 0.12);
+  --color-active: rgba(77, 141, 255, 0.2);
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.55);
+}
+
+/* Interruptor de tema: sol en oscuro, luna en claro. */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+.dark .theme-toggle .icon-sun,
+[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+.dark .theme-toggle .icon-moon,
+[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}

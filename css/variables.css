@@ -1,0 +1,73 @@
+/* Tokens de diseño: tipografía, espaciado, radios, sombras y colores (tema claro). */
+
+:root {
+  /* Tipografía */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
+
+  --lh-tight: 1.25;
+  --lh-base: 1.5;
+
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-bold: 700;
+
+  /* Espaciado */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Radios */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.18);
+
+  /* Layout */
+  --sidebar-w: 260px;
+  --topbar-h: 56px;
+  --content-max: 1200px;
+
+  /* Movimiento y capas */
+  --transition-fast: 120ms ease;
+  --transition: 200ms ease;
+  --z-topbar: 100;
+  --z-backdrop: 200;
+  --z-sidebar: 300;
+
+  /* Color: tema claro */
+  --color-bg: #f4f6fa;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef2f7;
+  --color-border: #d9e0e9;
+  --color-text: #1b2531;
+  --color-text-muted: #5c6b7e;
+  --color-primary: #1f6feb;
+  --color-primary-hover: #1a5fce;
+  --color-primary-contrast: #ffffff;
+  --color-accent: #12b886;
+  --color-success: #2f9e44;
+  --color-warning: #e8930c;
+  --color-danger: #dc2626;
+  --color-overlay: rgba(15, 23, 42, 0.45);
+  --color-hover: rgba(31, 111, 235, 0.08);
+  --color-active: rgba(31, 111, 235, 0.14);
+}
