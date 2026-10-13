@@ -19,6 +19,8 @@ function normText(value) {
 }
 
 function fetchJson(url) {
+  // Recurso local del propio origen (data/*.json): sin AbortController a
+  // propósito; no hay latencia externa que acotar.
   return fetch(url, { cache: 'no-cache' }).then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP ${response.status} en ${url}`);

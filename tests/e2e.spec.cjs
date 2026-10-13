@@ -15,7 +15,7 @@ const path = require('path');
 const { createTestServer } = require('./server.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
-const CACHE_NAME = 'net-tools-web-1.0.1';
+const CACHE_NAME = 'net-tools-web-1.0.2';
 const results = [];
 
 function check(name, cond, extra) {
@@ -64,8 +64,8 @@ function check(name, cond, extra) {
     }, CACHE_NAME);
 
     check('Cache ' + CACHE_NAME + ' presente', swState.keys.includes(CACHE_NAME));
-    check('Cache anterior 1.0.0 eliminada', !swState.keys.includes('net-tools-web-1.0.0'));
-    check('meta ntw-version = 1.0.1', swState.meta === '1.0.1');
+    check('Cache anterior 1.0.1 eliminada', !swState.keys.includes('net-tools-web-1.0.1'));
+    check('meta ntw-version = 1.0.2', swState.meta === '1.0.2');
     check('Banner de actualizacion oculto', swState.bannerHidden === true);
     check('Precache contiene js/utils.js', swState.urls.includes('js/utils.js'));
     const hasEmpty = ['css/components.css', 'js/libs/fabric.min.js', 'js/libs/jspdf.umd.min.js'].some((f) =>

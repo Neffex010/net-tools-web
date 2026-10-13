@@ -64,6 +64,15 @@
       list-style: disc;
     }
 
+    [data-page="diagnostico"] .notice--legal {
+      background-color: rgba(220, 38, 38, 0.1);
+      border-color: var(--color-danger);
+    }
+
+    [data-page="diagnostico"] .notice--legal h2 {
+      color: var(--color-danger);
+    }
+
     [data-page="diagnostico"] .field {
       display: grid;
       gap: var(--space-1);
@@ -290,6 +299,11 @@
     <p>Sí están disponibles: <strong>DNS over HTTPS</strong>, medición de <strong>latencia HTTP</strong> con <code>fetch</code> y <strong>geolocalización de IP</strong> mediante una API pública.</p>
   </section>
 
+  <section class="notice notice--legal" aria-labelledby="diag-legal-title">
+    <h2 id="diag-legal-title">Aviso de uso responsable</h2>
+    <p>Esta herramienta consulta servicios públicos de Internet. Úsala <strong>únicamente</strong> en dominios, direcciones IP y equipos que sean tuyos o para los que tengas autorización expresa del responsable. Sondeos a sistemas de terceros sin permiso pueden ser ilegales.</p>
+  </section>
+
   <section class="card" aria-labelledby="diag-dns-title">
     <h2 id="diag-dns-title">Consulta DNS (Cloudflare DoH)</h2>
     <p class="hint">Resuelve registros usando <code>https://cloudflare-dns.com/dns-query</code> sobre HTTPS. Requiere conexión a Internet.</p>
@@ -375,6 +389,7 @@
   <section class="card" aria-labelledby="diag-geo-title">
     <h2 id="diag-geo-title">Geolocalización de IP</h2>
     <p class="hint">Usa la API pública <code>ipapi.co</code>. Deja el campo vacío para geolocalizar tu propia conexión.</p>
+    <p class="notice" role="note">Tu IP se envía a <code>ipapi.co</code> para geolocalización. Es un servicio de terceros ajeno a esta app; evita consultar direcciones que no te correspondan.</p>
     <form data-diag-geo-form novalidate>
       <div class="row">
         <div class="field">

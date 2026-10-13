@@ -24,6 +24,100 @@ const STATUS_TEXT = {
   5: 'Consulta rechazada',
 };
 
+/* ---------- Límites de seguridad para las consultas de red ---------- */
+
+const FETCH_TIMEOUT_MS = 8000;
+
+const BLOCKED_HOSTNAMES = new Set([
+  'localhost',
+  'metadata.google.internal',
+  'metadata.goog',
+]);
+
+async function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function isPrivateIPv4(host) {
+  const parts = host.split('.');
+  if (parts.length !== 4) {
+    return false;
+  }
+  const octets = parts.map(Number);
+  if (octets.some((n) => !Number.isInteger(n) || n < 0 || n > 255)) {
+    return false;
+  }
+  const [a, b] = octets;
+  return (
+    a === 0 ||
+    a === 10 ||
+    a === 127 ||
+    (a === 169 && b === 254) ||
+    (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && b === 168) ||
+    (a === 100 && b >= 64 && b <= 127) ||
+    (a === 192 && b === 0) ||
+    a >= 224
+  );
+}
+
+function isPrivateIPv6(host) {
+  const value = host.replace(/^\[|\]$/g, '').toLowerCase();
+  if (!value.includes(':')) {
+    return false;
+  }
+  if (value === '::1' || value === '::') {
+    return true;
+  }
+  if (/^f[cd][0-9a-f]{2}:/.test(value)) {
+    return true;
+  }
+  return /^fe[89ab][0-9a-f]:/.test(value);
+}
+
+function isBlockedHost(host) {
+  const value = String(host || '').toLowerCase().replace(/\.$/, '');
+  if (!value) {
+    return true;
+  }
+  if (BLOCKED_HOSTNAMES.has(value)) {
+    return true;
+  }
+  if (value.endsWith('.localhost') || value.endsWith('.local') || value.endsWith('.internal')) {
+    return true;
+  }
+  return isPrivateIPv4(value) || isPrivateIPv6(value);
+}
+
+function normalizeTargetUrl(rawUrl) {
+  const trimmed = String(rawUrl || '').trim();
+  if (!trimmed) {
+    return { error: 'Escribe una URL para medir.' };
+  }
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+
+  let parsed;
+  try {
+    parsed = new URL(withScheme);
+  } catch (error) {
+    return { error: 'La URL no es válida.' };
+  }
+
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    return { error: 'Solo se permiten URLs http(s).' };
+  }
+  if (isBlockedHost(parsed.hostname)) {
+    return { error: 'Por seguridad no se permiten direcciones locales, privadas ni de metadatos.' };
+  }
+  return { url: parsed.href };
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -71,7 +165,7 @@ function classifyLatency(ms) {
 
 async function resolveDns(name, type) {
   const url = `${DNS_ENDPOINT}?name=${encodeURIComponent(name)}&type=${encodeURIComponent(type)}`;
-  const response = await fetch(url, {
+  const response = await fetchWithTimeout(url, {
     headers: { accept: 'application/dns-json' },
     cache: 'no-store',
   });
@@ -81,26 +175,27 @@ async function resolveDns(name, type) {
   return response.json();
 }
 
-async function measureLatency(rawUrl) {
-  let url = rawUrl.trim();
-  if (!/^https?:\/\//i.test(url)) {
-    url = `https://${url}`;
-  }
-
+async function measureLatency(url) {
   const start = performance.now();
   try {
-    const response = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-store' });
+    const response = await fetchWithTimeout(url, { method: 'GET', mode: 'cors', cache: 'no-store' });
     return {
       ms: performance.now() - start,
       code: String(response.status),
       final: response.url || url,
     };
   } catch (corsError) {
+    if (corsError && corsError.name === 'AbortError') {
+      throw new Error('La solicitud excedió el tiempo límite.');
+    }
     const retryStart = performance.now();
     try {
-      await fetch(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
+      await fetchWithTimeout(url, { method: 'GET', mode: 'no-cors', cache: 'no-store' });
       return { ms: performance.now() - retryStart, code: 'opaca (sin CORS)', final: url };
     } catch (networkError) {
+      if (networkError && networkError.name === 'AbortError') {
+        throw new Error('La solicitud excedió el tiempo límite.');
+      }
       throw new Error(networkError.message || corsError.message || 'No se pudo conectar.');
     }
   }
@@ -110,10 +205,20 @@ async function geolocate(ip) {
   const target = ip
     ? `${GEO_ENDPOINT}/${encodeURIComponent(ip)}/json/`
     : `${GEO_ENDPOINT}/json/`;
-  const response = await fetch(target, { cache: 'no-store' });
+  const response = await fetchWithTimeout(target, { cache: 'no-store' });
   const data = await response.json().catch(() => null);
+
+  // Plan gratuito de ipapi.co: 1000 consultas/día. Al agotarse responde 429
+  // (en ocasiones con body { error: true, reason: "Rate limited" }).
+  const reason = data && data.reason ? String(data.reason) : '';
+  if (response.status === 429 || /rate|limit/i.test(reason)) {
+    const error = new Error('rate-limited');
+    error.userMessage =
+      'ipapi.co alcanzó su límite gratuito (1000 consultas/día). Inténtalo de nuevo más tarde.';
+    throw error;
+  }
   if (!response.ok || !data || data.error) {
-    throw new Error((data && data.reason) || `HTTP ${response.status}`);
+    throw new Error(reason || `HTTP ${response.status}`);
   }
   return data;
 }
@@ -219,9 +324,9 @@ export function init() {
 
   latForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    const url = latUrl.value.trim();
-    if (!url) {
-      showError(latError, 'Escribe una URL para medir.');
+    const target = normalizeTargetUrl(latUrl.value);
+    if (target.error) {
+      showError(latError, target.error);
       latUrl.focus();
       return;
     }
@@ -230,7 +335,7 @@ export function init() {
     setBusy(latSubmit, true);
     showStatus(latStatus, 'Midiendo latencia…');
 
-    measureLatency(url)
+    measureLatency(target.url)
       .then((result) => {
         const ms = Math.max(0, result.ms);
         const rounded = ms >= 10 ? Math.round(ms) : Math.round(ms * 10) / 10;
@@ -245,7 +350,12 @@ export function init() {
       .catch((error) => {
         console.error('[diagnostico] Error al medir latencia:', error);
         showStatus(latStatus, '');
-        showError(latError, 'No se pudo medir la latencia. Comprueba la URL y tu conexión.');
+        showError(
+          latError,
+          error.message === 'La solicitud excedió el tiempo límite.'
+            ? error.message
+            : 'No se pudo medir la latencia. Comprueba la URL y tu conexión.'
+        );
       })
       .finally(() => setBusy(latSubmit, false));
   });
@@ -272,14 +382,24 @@ export function init() {
       .catch((error) => {
         console.error('[diagnostico] Error al geolocalizar:', error);
         showStatus(geoStatus, '');
-        showError(geoError, 'No se pudo obtener la geolocalización. Revisa la IP o tu conexión.');
+        showError(
+          geoError,
+          error.userMessage ||
+            'No se pudo obtener la geolocalización. Revisa la IP o tu conexión.'
+        );
       })
       .finally(() => setBusy(geoSubmit, false));
   }
 
   geoForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    runGeo(geoIp.value.trim());
+    const ip = geoIp.value.trim();
+    if (ip && isBlockedHost(ip)) {
+      showError(geoError, 'No se pueden geolocalizar direcciones locales o privadas.');
+      geoIp.focus();
+      return;
+    }
+    runGeo(ip);
   });
 
   geoSelf.addEventListener('click', () => {

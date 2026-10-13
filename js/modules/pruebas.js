@@ -13,6 +13,8 @@ function loadTemplate() {
   if (templatePromise) {
     return templatePromise;
   }
+  // Plantilla local del propio origen (templates/informe-pruebas.html): sin
+  // AbortController a propósito; no hay latencia externa que acotar.
   templatePromise = fetch(TEMPLATE_URL)
     .then((response) => {
       if (!response.ok) {

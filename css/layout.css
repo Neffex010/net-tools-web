@@ -163,6 +163,22 @@ body {
   opacity: 0.6;
 }
 
+/* Pie de página global */
+.app-footer {
+  padding: var(--space-5) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  text-align: center;
+}
+
+.app-footer p {
+  max-width: 60ch;
+  margin-inline: auto;
+}
+
 .route-error {
   padding: var(--space-5);
   border: 1px solid var(--color-danger);

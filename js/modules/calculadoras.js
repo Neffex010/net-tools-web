@@ -263,6 +263,8 @@ async function loadCategorias() {
   if (cacheCategorias) {
     return cacheCategorias;
   }
+  // Recurso local del propio origen (data/*.json): sin AbortController a
+  // propósito; no hay latencia externa que acotar.
   const response = await fetch(CATEGORIAS_URL, { cache: 'no-cache' });
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);

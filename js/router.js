@@ -59,6 +59,8 @@ function renderError(route, error) {
 }
 
 async function loadView(route) {
+  // Recurso local del propio origen (pages/*.html): sin AbortController a
+  // propósito; no hay latencia externa que acotar.
   const response = await fetch(`${PAGES_DIR}${ROUTES[route].file}`, { cache: 'no-cache' });
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);

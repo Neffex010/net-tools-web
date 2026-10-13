@@ -2,10 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <!--
+    Content-Security-Policy (meta; hosting estático sin cabeceras).
+    - script-src 'self': no se permite JS inline ni de terceros.
+    - style-src 'self' 'unsafe-inline': las vistas y plantillas se inyectan por
+      innerHTML y traen su propio <style>; sin 'unsafe-inline' la UI se rompería.
+    - connect-src: solo mismo origen + las APIs públicas usadas por Diagnóstico.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflare-dns.com https://ipapi.co; object-src 'none'; base-uri 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Herramientas para redes, cableado y ponchado. 100% frontend.">
   <meta name="color-scheme" content="light dark">
-  <meta name="ntw-version" content="1.0.1">
+  <meta name="ntw-version" content="1.0.2">
   <meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0f1620" media="(prefers-color-scheme: dark)">
   <title>Net Tools Web</title>
@@ -23,19 +31,7 @@
   <link rel="stylesheet" href="css/themes.css">
   <link rel="stylesheet" href="css/layout.css">
 
-  <script>
-    (function () {
-      try {
-        var stored = localStorage.getItem('nt.theme');
-        var isDark = stored
-          ? stored === 'dark'
-          : window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.classList.toggle('dark', isDark);
-      } catch (err) {
-        /* localStorage no disponible: se usa el tema claro por defecto */
-      }
-    })();
-  </script>
+  <script src="js/theme-boot.js"></script>
 
   <style>
     .pwa-update {
@@ -135,6 +131,10 @@
     <main id="app" class="content" tabindex="-1"></main>
   </div>
 
+  <footer class="app-footer">
+    <p>Net Tools Web · Herramienta de apoyo para redes y cableado. Úsala solo en equipos y redes propias o con autorización expresa.</p>
+  </footer>
+
   <script type="module" src="js/main.js"></script>
 
   <div id="pwa-update" class="pwa-update" hidden>
@@ -143,64 +143,6 @@
     <button id="pwa-update-close" class="pwa-update__close" type="button" aria-label="Cerrar">×</button>
   </div>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        var updateWorker = null;
-        var userRequestedUpdate = false;
-
-        function showUpdateBanner(worker) {
-          updateWorker = worker;
-          var banner = document.getElementById('pwa-update');
-          if (banner) banner.hidden = false;
-        }
-
-        navigator.serviceWorker.register('service-worker.js')
-          .then(function (reg) {
-            if (reg.waiting && navigator.serviceWorker.controller) {
-              showUpdateBanner(reg.waiting);
-              return;
-            }
-            reg.addEventListener('updatefound', function () {
-              var newWorker = reg.installing;
-              if (!newWorker) return;
-              newWorker.addEventListener('statechange', function () {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  showUpdateBanner(newWorker);
-                }
-              });
-            });
-          })
-          .catch(function (err) {
-            console.error('[pwa] No se pudo registrar el service worker:', err);
-          });
-
-        var updateBtn = document.getElementById('pwa-update-btn');
-        if (updateBtn) {
-          updateBtn.addEventListener('click', function () {
-            if (!updateWorker) return;
-            userRequestedUpdate = true;
-            updateWorker.postMessage({ type: 'SKIP_WAITING' });
-            updateBtn.disabled = true;
-          });
-        }
-
-        var updateClose = document.getElementById('pwa-update-close');
-        if (updateClose) {
-          updateClose.addEventListener('click', function () {
-            var banner = document.getElementById('pwa-update');
-            if (banner) banner.hidden = true;
-            updateWorker = null;
-          });
-        }
-
-        navigator.serviceWorker.addEventListener('controllerchange', function () {
-          if (userRequestedUpdate) {
-            window.location.reload();
-          }
-        });
-      });
-    }
-  </script>
+  <script src="js/sw-register.js"></script>
 </body>
 </html>

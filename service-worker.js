@@ -4,7 +4,7 @@
  * - network-first para navegaciones y el resto, con respaldo en caché sin conexión.
  */
 
-const APP_VERSION = '1.0.1';
+const APP_VERSION = '1.0.2';
 
 const CACHE_NAME = 'net-tools-web-' + APP_VERSION;
 
@@ -17,6 +17,8 @@ const PRECACHE_URLS = [
   './css/themes.css',
   './css/layout.css',
   './js/main.js',
+  './js/theme-boot.js',
+  './js/sw-register.js',
   './js/router.js',
   './js/store.js',
   './js/utils.js',

@@ -78,6 +78,8 @@ async function loadStandard(id) {
   if (state.data[id]) {
     return state.data[id];
   }
+  // Recurso local del propio origen (data/t568*.json): sin AbortController a
+  // propósito; no hay latencia externa que acotar.
   const response = await fetch(STANDARD_FILES[id].url, { cache: 'no-cache' });
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}`);
