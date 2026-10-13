@@ -1,221 +1,323 @@
 <section class="page" data-page="dashboard">
   <style>
-    [data-page="dashboard"] {
+    [data-page="dashboard"] .bento {
       display: grid;
-      gap: var(--space-5);
+      gap: var(--bento-gap);
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "hero"
+        "stats"
+        "mods";
     }
 
-    [data-page="dashboard"] .page-head {
+    [data-page="dashboard"] .bento__hero { grid-area: hero; }
+    [data-page="dashboard"] .bento__stats { grid-area: stats; }
+    [data-page="dashboard"] .bento__mods { grid-area: mods; }
+
+    /* ---- Hero: acceso rápido a Diagnóstico ---- */
+    .hero-card {
       display: grid;
+      align-content: center;
       gap: var(--space-2);
+      padding: clamp(1rem, 2vw, 1.75rem);
+      color: var(--color-text);
+      background:
+        linear-gradient(135deg, var(--color-active), transparent 62%),
+        var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+        transform var(--transition-fast);
     }
 
-    [data-page="dashboard"] h1 {
-      font-size: var(--fs-2xl);
-      line-height: var(--lh-tight);
+    .hero-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
 
-    [data-page="dashboard"] .lead {
-      max-width: 65ch;
+    .hero-card:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .hero-card:active {
+      transform: translateY(0);
+    }
+
+    .hero-card__badge {
+      justify-self: start;
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-primary);
+      background-color: var(--color-active);
+      border-radius: var(--radius-full);
+    }
+
+    .hero-card__title {
+      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      font-weight: var(--fw-bold);
+      line-height: 1.15;
+    }
+
+    .hero-card__desc {
+      font-size: var(--fs-sm);
       color: var(--color-text-muted);
+      max-width: 60ch;
     }
 
-    [data-page="dashboard"] .card {
+    .hero-card__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-1);
+    }
+
+    .hero-card__chip {
+      padding: 2px var(--space-2);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-medium);
+      color: var(--color-text-muted);
+      background-color: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+    }
+
+    .hero-card__cta {
+      margin-top: var(--space-2);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
+      color: var(--color-primary);
+    }
+
+    /* ---- Stats ---- */
+    .stats {
       display: grid;
-      gap: var(--space-4);
-      padding: var(--space-4);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--bento-gap);
+      align-content: start;
+    }
+
+    .stat {
+      display: grid;
+      gap: 2px;
+      padding: var(--space-3) var(--space-4);
       background-color: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm);
     }
 
-    [data-page="dashboard"] .card h2 {
-      font-size: var(--fs-xl);
-      line-height: var(--lh-tight);
-    }
-
-    [data-page="dashboard"] .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: var(--space-3);
-    }
-
-    [data-page="dashboard"] .stat {
-      display: grid;
-      gap: var(--space-1);
-      padding: var(--space-3) var(--space-4);
-      background-color: var(--color-surface-2);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-    }
-
-    [data-page="dashboard"] .stat__value {
-      font-size: var(--fs-2xl);
+    .stat__value {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
       font-weight: var(--fw-bold);
-      line-height: var(--lh-tight);
+      line-height: 1;
       color: var(--color-primary);
       font-variant-numeric: tabular-nums;
     }
 
-    [data-page="dashboard"] .stat__label {
-      font-size: var(--fs-sm);
+    .stat__label {
+      font-size: var(--fs-xs);
       color: var(--color-text-muted);
     }
 
-    [data-page="dashboard"] .modules {
+    /* ---- Módulos ---- */
+    .modules {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: var(--space-3);
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--bento-gap);
     }
 
-    [data-page="dashboard"] .module-card {
+    .module-card {
       display: grid;
       grid-template-columns: auto 1fr;
       grid-template-areas:
         "icon title"
         "icon desc";
       align-items: center;
-      column-gap: var(--space-3);
-      row-gap: var(--space-1);
-      padding: var(--space-4);
+      column-gap: var(--space-2);
+      row-gap: 2px;
+      min-height: 44px;
+      padding: var(--space-2) var(--space-3);
       color: var(--color-text);
       background-color: var(--color-surface);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       box-shadow: var(--shadow-sm);
-      text-decoration: none;
-      transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+      transition: transform var(--transition-fast), border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background-color var(--transition-fast);
     }
 
-    [data-page="dashboard"] .module-card:hover {
+    .module-card:hover {
       transform: translateY(-2px);
       border-color: var(--color-primary);
       box-shadow: var(--shadow-md);
+      background-color: var(--color-surface-2);
     }
 
-    [data-page="dashboard"] .module-card:focus-visible {
+    .module-card:focus-visible {
       outline: 2px solid var(--color-primary);
       outline-offset: 2px;
     }
 
-    [data-page="dashboard"] .module-card__icon {
+    .module-card:active {
+      transform: translateY(0);
+    }
+
+    .module-card__icon {
       grid-area: icon;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
-      font-size: var(--fs-xl);
+      width: 34px;
+      height: 34px;
+      font-size: var(--fs-lg);
       line-height: 1;
       background-color: var(--color-active);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-sm);
     }
 
-    [data-page="dashboard"] .module-card__title {
+    .module-card__title {
       grid-area: title;
       font-weight: var(--fw-bold);
-      line-height: var(--lh-tight);
+      line-height: 1.2;
     }
 
-    [data-page="dashboard"] .module-card__desc {
+    .module-card__desc {
       grid-area: desc;
-      font-size: var(--fs-sm);
+      font-size: var(--fs-xs);
       color: var(--color-text-muted);
+      line-height: 1.35;
     }
 
-    @media (min-width: 720px) {
-      [data-page="dashboard"] .card {
-        padding: var(--space-5);
+    /* Tablet: 2 columnas, hero y stats full-width */
+    @media (min-width: 768px) {
+      [data-page="dashboard"] .bento {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+          "hero hero"
+          "stats stats"
+          "mods mods";
+      }
+
+      .stats {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    /* Escritorio: hero 2x2 + stats 2x2 arriba; módulos a todo el ancho */
+    @media (min-width: 1024px) {
+      [data-page="dashboard"] .bento {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-areas:
+          "hero hero stats stats"
+          "mods mods mods mods";
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .modules {
+        grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
       }
     }
   </style>
 
   <header class="page-head">
-    <h1>Net Tools Web</h1>
-    <p class="lead">Herramientas para redes, cableado y ponchado. Elige un módulo para empezar.</p>
+    <h1>Panel de inicio</h1>
+    <p class="lead">Diagnósticos rápidos y acceso directo a todos los módulos. Todo funciona sin conexión.</p>
   </header>
 
-  <section class="card" aria-labelledby="dash-resumen-title">
-    <h2 id="dash-resumen-title">Resumen</h2>
-    <div class="stats">
+  <div class="bento">
+    <a class="hero-card bento__hero" href="#/diagnostico" data-route="diagnostico">
+      <span class="hero-card__badge">Diagnóstico</span>
+      <span class="hero-card__title">DNS, latencia y geolocalización de IP</span>
+      <span class="hero-card__desc">Resuelve registros con Cloudflare DoH, mide el tiempo de respuesta HTTP y ubica una IP, directamente desde el navegador.</span>
+      <span class="hero-card__links">
+        <span class="hero-card__chip">DNS</span>
+        <span class="hero-card__chip">Latencia</span>
+        <span class="hero-card__chip">IP</span>
+      </span>
+      <span class="hero-card__cta">Abrir Diagnóstico →</span>
+    </a>
+
+    <section class="stats bento__stats" aria-label="Resumen de datos guardados">
       <div class="stat">
         <span class="stat__value" data-dash-inventario aria-live="polite">0</span>
-        <span class="stat__label">Puntos de red en Inventario</span>
+        <span class="stat__label">Puntos de red</span>
       </div>
       <div class="stat">
         <span class="stat__value" data-dash-pruebas aria-live="polite">0</span>
-        <span class="stat__label">Pruebas registradas</span>
+        <span class="stat__label">Pruebas</span>
       </div>
       <div class="stat">
         <span class="stat__value" data-dash-conexiones aria-live="polite">0</span>
-        <span class="stat__label">Conexiones registradas</span>
+        <span class="stat__label">Conexiones</span>
       </div>
       <div class="stat">
         <span class="stat__value" data-dash-etiquetas aria-live="polite">0</span>
-        <span class="stat__label">Etiquetas generadas</span>
+        <span class="stat__label">Etiquetas</span>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="card" aria-labelledby="dash-modulos-title">
-    <h2 id="dash-modulos-title">Módulos</h2>
-    <nav class="modules" aria-label="Módulos de la aplicación">
-      <a class="module-card" href="#/ponchado">
-        <span class="module-card__icon" aria-hidden="true">🔌</span>
-        <span class="module-card__title">Ponchado</span>
-        <span class="module-card__desc">Códigos de color T568A/T568B paso a paso.</span>
-      </a>
-      <a class="module-card" href="#/calculadoras">
-        <span class="module-card__icon" aria-hidden="true">🧮</span>
-        <span class="module-card__title">Calculadoras</span>
-        <span class="module-card__desc">Subredes, ancho de banda y pérdida de señal.</span>
-      </a>
-      <a class="module-card" href="#/planos">
-        <span class="module-card__icon" aria-hidden="true">🗺️</span>
-        <span class="module-card__title">Planos</span>
-        <span class="module-card__desc">Dibuja y organiza el plano de la instalación.</span>
-      </a>
-      <a class="module-card" href="#/inventario">
-        <span class="module-card__icon" aria-hidden="true">📦</span>
-        <span class="module-card__title">Inventario</span>
-        <span class="module-card__desc">Registra puntos de red y su estado de avance.</span>
-      </a>
-      <a class="module-card" href="#/conexiones">
-        <span class="module-card__icon" aria-hidden="true">🔗</span>
-        <span class="module-card__title">Conexiones</span>
-        <span class="module-card__desc">Documenta enlaces puerto a puerto.</span>
-      </a>
-      <a class="module-card" href="#/etiquetas">
-        <span class="module-card__icon" aria-hidden="true">🏷️</span>
-        <span class="module-card__title">Etiquetas</span>
-        <span class="module-card__desc">Genera etiquetas con QR para tus cables.</span>
-      </a>
-      <a class="module-card" href="#/pruebas">
-        <span class="module-card__icon" aria-hidden="true">🧪</span>
-        <span class="module-card__title">Pruebas</span>
-        <span class="module-card__desc">Registra pruebas de certificación y resultados.</span>
-      </a>
-      <a class="module-card" href="#/estandares">
-        <span class="module-card__icon" aria-hidden="true">📏</span>
-        <span class="module-card__title">Estándares</span>
-        <span class="module-card__desc">Normas TIA/EIA/ISO, categorías y distancias.</span>
-      </a>
-      <a class="module-card" href="#/diagnostico">
-        <span class="module-card__icon" aria-hidden="true">🩺</span>
-        <span class="module-card__title">Diagnóstico</span>
-        <span class="module-card__desc">DNS, latencia y geolocalización de una IP.</span>
-      </a>
-      <a class="module-card" href="#/configuracion">
-        <span class="module-card__icon" aria-hidden="true">⚙️</span>
-        <span class="module-card__title">Configuración</span>
-        <span class="module-card__desc">Tema, respaldo y ajustes de la aplicación.</span>
-      </a>
-      <a class="module-card" href="#/ayuda">
-        <span class="module-card__icon" aria-hidden="true">❓</span>
-        <span class="module-card__title">Ayuda</span>
-        <span class="module-card__desc">Preguntas frecuentes y atajos de teclado.</span>
-      </a>
-    </nav>
-  </section>
+    <section class="bento__mods" aria-label="Módulos de la aplicación">
+      <nav class="modules" aria-label="Módulos de la aplicación">
+        <a class="module-card" href="#/ponchado" data-route="ponchado">
+          <span class="module-card__icon" aria-hidden="true">🔌</span>
+          <span class="module-card__title">Ponchado</span>
+          <span class="module-card__desc">Códigos de color T568A/T568B.</span>
+        </a>
+        <a class="module-card" href="#/calculadoras" data-route="calculadoras">
+          <span class="module-card__icon" aria-hidden="true">🧮</span>
+          <span class="module-card__title">Calculadoras</span>
+          <span class="module-card__desc">Subredes, unidades y material.</span>
+        </a>
+        <a class="module-card" href="#/planos" data-route="planos">
+          <span class="module-card__icon" aria-hidden="true">🗺️</span>
+          <span class="module-card__title">Planos</span>
+          <span class="module-card__desc">Dibuja el plano de la instalación.</span>
+        </a>
+        <a class="module-card" href="#/inventario" data-route="inventario">
+          <span class="module-card__icon" aria-hidden="true">📦</span>
+          <span class="module-card__title">Inventario</span>
+          <span class="module-card__desc">Puntos de red y su estado.</span>
+        </a>
+        <a class="module-card" href="#/conexiones" data-route="conexiones">
+          <span class="module-card__icon" aria-hidden="true">🔗</span>
+          <span class="module-card__title">Conexiones</span>
+          <span class="module-card__desc">Enlaces puerto a puerto.</span>
+        </a>
+        <a class="module-card" href="#/etiquetas" data-route="etiquetas">
+          <span class="module-card__icon" aria-hidden="true">🏷️</span>
+          <span class="module-card__title">Etiquetas</span>
+          <span class="module-card__desc">Etiquetas con QR para cables.</span>
+        </a>
+        <a class="module-card" href="#/pruebas" data-route="pruebas">
+          <span class="module-card__icon" aria-hidden="true">🧪</span>
+          <span class="module-card__title">Pruebas</span>
+          <span class="module-card__desc">Certificación y resultados.</span>
+        </a>
+        <a class="module-card" href="#/estandares" data-route="estandares">
+          <span class="module-card__icon" aria-hidden="true">📏</span>
+          <span class="module-card__title">Estándares</span>
+          <span class="module-card__desc">Normas, categorías y distancias.</span>
+        </a>
+        <a class="module-card" href="#/configuracion" data-route="configuracion">
+          <span class="module-card__icon" aria-hidden="true">⚙️</span>
+          <span class="module-card__title">Configuración</span>
+          <span class="module-card__desc">Tema, respaldo y ajustes.</span>
+        </a>
+        <a class="module-card" href="#/ayuda" data-route="ayuda">
+          <span class="module-card__icon" aria-hidden="true">❓</span>
+          <span class="module-card__title">Ayuda</span>
+          <span class="module-card__desc">Preguntas frecuentes y atajos.</span>
+        </a>
+      </nav>
+    </section>
+  </div>
 </section>

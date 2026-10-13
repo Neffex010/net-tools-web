@@ -3,7 +3,64 @@
     /* Estilos específicos de la vista Diagnóstico (autocontenidos y con ámbito). */
     [data-page="diagnostico"] {
       display: grid;
-      gap: var(--space-5);
+      gap: var(--bento-gap);
+    }
+
+    /* Bento: DNS como hero (2x2) + IP y Latencia 1x1 */
+    [data-page="diagnostico"] .bento {
+      display: grid;
+      gap: var(--bento-gap);
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "dns"
+        "geo"
+        "lat";
+    }
+
+    [data-page="diagnostico"] .bento__dns { grid-area: dns; }
+    [data-page="diagnostico"] .bento__geo { grid-area: geo; }
+    [data-page="diagnostico"] .bento__lat { grid-area: lat; }
+
+    [data-page="diagnostico"] .bento .card {
+      align-content: start;
+    }
+
+    /* Avisos: lado a lado en escritorio para no empujar las herramientas */
+    [data-page="diagnostico"] .notices {
+      display: grid;
+      gap: var(--bento-gap);
+    }
+
+    [data-page="diagnostico"] .notice {
+      padding: clamp(0.7rem, 1.2vw, 1rem);
+    }
+
+    /* Resultados largos (DNS): scroll dentro de la tarjeta, no de la página */
+    [data-page="diagnostico"] .bento__dns .table-wrap {
+      max-height: min(46vh, 26rem);
+      overflow: auto;
+    }
+
+    @media (min-width: 768px) {
+      [data-page="diagnostico"] .bento {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-areas:
+          "dns dns"
+          "geo lat";
+      }
+    }
+
+    @media (min-width: 1024px) {
+      [data-page="diagnostico"] .bento {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-areas:
+          "dns dns geo"
+          "dns dns lat";
+      }
+
+      [data-page="diagnostico"] .notices {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     [data-page="diagnostico"] .page-head {
@@ -276,7 +333,7 @@
       border: 0;
     }
 
-    @media (min-width: 720px) {
+    @media (min-width: 768px) {
       [data-page="diagnostico"] .card {
         padding: var(--space-5);
       }
@@ -288,6 +345,7 @@
     <p class="lead">Consulta DNS, mide la latencia HTTP y geolocaliza una dirección IP directamente desde el navegador.</p>
   </header>
 
+  <div class="notices">
   <section class="notice" aria-labelledby="diag-notice-title">
     <h2 id="diag-notice-title">Qué sí y qué no es posible desde el navegador</h2>
     <p>Por el modelo de seguridad del navegador no se pueden abrir sockets ni enviar paquetes de red arbitrarios. Por eso <strong>no</strong> están disponibles:</p>
@@ -303,8 +361,10 @@
     <h2 id="diag-legal-title">Aviso de uso responsable</h2>
     <p>Esta herramienta consulta servicios públicos de Internet. Úsala <strong>únicamente</strong> en dominios, direcciones IP y equipos que sean tuyos o para los que tengas autorización expresa del responsable. Sondeos a sistemas de terceros sin permiso pueden ser ilegales.</p>
   </section>
+  </div>
 
-  <section class="card" aria-labelledby="diag-dns-title">
+  <div class="bento">
+    <section class="card bento__dns" aria-labelledby="diag-dns-title">
     <h2 id="diag-dns-title">Consulta DNS (Cloudflare DoH)</h2>
     <p class="hint">Resuelve registros usando <code>https://cloudflare-dns.com/dns-query</code> sobre HTTPS. Requiere conexión a Internet.</p>
     <form data-diag-dns-form novalidate>
@@ -351,7 +411,7 @@
     </div>
   </section>
 
-  <section class="card" aria-labelledby="diag-lat-title">
+    <section class="card bento__lat" aria-labelledby="diag-lat-title">
     <h2 id="diag-lat-title">Latencia HTTP</h2>
     <p class="hint">Mide el tiempo de respuesta con <code>fetch</code> y <code>performance.now()</code>. Los sitios sin cabeceras CORS responden de forma opaca: se mide el tiempo pero no el código de estado.</p>
     <form data-diag-lat-form novalidate>
@@ -386,7 +446,7 @@
     </div>
   </section>
 
-  <section class="card" aria-labelledby="diag-geo-title">
+    <section class="card bento__geo" aria-labelledby="diag-geo-title">
     <h2 id="diag-geo-title">Geolocalización de IP</h2>
     <p class="hint">Usa la API pública <code>ipapi.co</code>. Deja el campo vacío para geolocalizar tu propia conexión.</p>
     <p class="notice" role="note">Tu IP se envía a <code>ipapi.co</code> para geolocalización. Es un servicio de terceros ajeno a esta app; evita consultar direcciones que no te correspondan.</p>
@@ -434,5 +494,6 @@
         <dd data-diag-geo-timezone>—</dd>
       </div>
     </dl>
-  </section>
+    </section>
+  </div>
 </section>

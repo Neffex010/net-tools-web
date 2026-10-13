@@ -7,9 +7,10 @@
     - script-src 'self': no se permite JS inline ni de terceros.
     - style-src 'self' 'unsafe-inline': las vistas y plantillas se inyectan por
       innerHTML y traen su propio <style>; sin 'unsafe-inline' la UI se rompería.
-    - connect-src: solo mismo origen + las APIs públicas usadas por Diagnóstico.
+    - connect-src: mismo origen + https (Diagnóstico mide latencia a URLs que
+      el usuario escribe; por eso no se puede restringir a hosts concretos).
   -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflare-dns.com https://ipapi.co; object-src 'none'; base-uri 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https:; object-src 'none'; base-uri 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Herramientas para redes, cableado y ponchado. 100% frontend.">
   <meta name="color-scheme" content="light dark">
@@ -92,7 +93,7 @@
         </svg>
       </button>
 
-      <a class="brand" href="#/dashboard">Net&nbsp;Tools&nbsp;Web</a>
+      <a class="brand" href="#/dashboard">Net&nbsp;Tools&nbsp;Web<span class="brand__tag">· Diagnóstico de red</span></a>
 
       <button id="theme-toggle" class="icon-button theme-toggle" type="button"
               aria-label="Cambiar tema" aria-pressed="false">
