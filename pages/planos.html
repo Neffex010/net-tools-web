@@ -64,6 +64,20 @@
       color: var(--color-text-muted);
     }
 
+    [data-page="planos"] .file-picker {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    [data-page="planos"] .file-name {
+      max-width: 14rem;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+      overflow-wrap: anywhere;
+    }
+
     [data-page="planos"] .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -267,7 +281,11 @@
     <div class="toolbar">
       <div class="field">
         <label for="pl-image">Imagen del plano</label>
-        <input id="pl-image" type="file" accept="image/*" data-pl-image>
+        <input id="pl-image" type="file" accept="image/*" data-pl-image hidden>
+        <div class="file-picker">
+          <button type="button" class="btn" data-pl-image-btn>Elegir imagen…</button>
+          <span class="file-name" data-pl-image-name>Sin imagen</span>
+        </div>
       </div>
       <div class="field">
         <label for="pl-escala">Escala (m por píxel)</label>

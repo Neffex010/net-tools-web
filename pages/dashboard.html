@@ -125,6 +125,37 @@
       color: var(--color-text-muted);
     }
 
+    /* Las tarjetas son enlaces: llevan al módulo que resumen. */
+    a.stat {
+      color: var(--color-text);
+      transition: transform var(--transition-fast), border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    a.stat:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+      background-color: var(--color-surface-2);
+    }
+
+    a.stat:active {
+      transform: translateY(0);
+    }
+
+    .stats__hint {
+      grid-column: 1 / -1;
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--color-text-muted);
+    }
+
+    .stats__hint a {
+      color: var(--color-primary);
+      font-weight: var(--fw-medium);
+      text-decoration: underline;
+    }
+
     /* ---- Módulos ---- */
     .modules {
       display: grid;
@@ -247,22 +278,26 @@
     </a>
 
     <section class="stats bento__stats" aria-label="Resumen de datos guardados">
-      <div class="stat">
+      <a class="stat" href="#/inventario" data-route="inventario">
         <span class="stat__value" data-dash-inventario aria-live="polite">0</span>
         <span class="stat__label">Puntos de red</span>
-      </div>
-      <div class="stat">
+      </a>
+      <a class="stat" href="#/pruebas" data-route="pruebas">
         <span class="stat__value" data-dash-pruebas aria-live="polite">0</span>
         <span class="stat__label">Pruebas</span>
-      </div>
-      <div class="stat">
+      </a>
+      <a class="stat" href="#/conexiones" data-route="conexiones">
         <span class="stat__value" data-dash-conexiones aria-live="polite">0</span>
         <span class="stat__label">Conexiones</span>
-      </div>
-      <div class="stat">
+      </a>
+      <a class="stat" href="#/etiquetas" data-route="etiquetas">
         <span class="stat__value" data-dash-etiquetas aria-live="polite">0</span>
         <span class="stat__label">Etiquetas</span>
-      </div>
+      </a>
+      <p class="stats__hint" data-dash-hint hidden>
+        Aún no hay datos guardados. Empieza por
+        <a href="#/inventario" data-route="inventario">registrar tus puntos de red</a>.
+      </p>
     </section>
 
     <section class="bento__mods" aria-label="Módulos de la aplicación">

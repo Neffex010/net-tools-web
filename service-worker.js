@@ -4,7 +4,7 @@
  * - network-first para navegaciones y el resto, con respaldo en caché sin conexión.
  */
 
-const APP_VERSION = '1.0.2';
+const APP_VERSION = '1.0.3';
 
 const CACHE_NAME = 'net-tools-web-' + APP_VERSION;
 
@@ -73,7 +73,9 @@ self.addEventListener('install', (event) => {
           )
         )
       )
-      .then(() => self.skipWaiting())
+    // Sin skipWaiting aquí: el SW nuevo queda en espera para que la app muestre
+    // el banner "Nueva versión disponible". El cambio se aplica cuando el
+    // usuario pulsa el botón (mensaje SKIP_WAITING).
   );
 });
 

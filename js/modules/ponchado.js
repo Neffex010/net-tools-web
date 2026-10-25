@@ -263,12 +263,17 @@ function attachSimEvents(root) {
     });
   });
 
-  enableDrop(source, () => {
-    const chip = getChipByKey(root, state.dragKey);
-    if (chip) {
-      moveChip(chip, source);
-    }
-  });
+  // El contenedor de origen se reutiliza entre reinicios del simulador: se
+  // enlaza una sola vez para no acumular listeners de drop duplicados.
+  if (!source.dataset.dropBound) {
+    source.dataset.dropBound = 'true';
+    enableDrop(source, () => {
+      const chip = getChipByKey(root, state.dragKey);
+      if (chip) {
+        moveChip(chip, source);
+      }
+    });
+  }
 
   target.querySelectorAll('.sim-slot').forEach((slot) => {
     enableDrop(slot, () => {

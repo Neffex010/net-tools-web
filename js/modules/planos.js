@@ -90,6 +90,8 @@ export function init() {
   const markersList = root.querySelector('[data-pl-markers]');
   const messageEl = root.querySelector('[data-pl-message]');
   const imageInput = root.querySelector('[data-pl-image]');
+  const imageName = root.querySelector('[data-pl-image-name]');
+  const imageButton = root.querySelector('[data-pl-image-btn]');
   const escalaInput = root.querySelector('[data-pl-escala]');
   const projectFile = root.querySelector('[data-pl-project-file]');
   const zoomLabel = root.querySelector('[data-pl-zoom-label]');
@@ -613,9 +615,15 @@ export function init() {
     const point = toCanvas(event);
     const marker = hitMarker(point);
     if (marker) {
-      pushHistory();
       state.selected = { kind: 'marker', id: marker.id };
-      state.drag = { kind: 'marker', id: marker.id, dx: marker.x - point.x, dy: marker.y - point.y };
+      state.drag = {
+        kind: 'marker',
+        id: marker.id,
+        start: point,
+        dx: marker.x - point.x,
+        dy: marker.y - point.y,
+        moved: false,
+      };
       canvas.setPointerCapture(event.pointerId);
       draw();
       renderLists();
@@ -623,9 +631,14 @@ export function init() {
     }
     const route = hitRoute(point);
     if (route) {
-      pushHistory();
       state.selected = { kind: 'route', id: route.id };
-      state.drag = { kind: 'route', id: route.id, start: point, original: route.points.map((p) => ({ ...p })) };
+      state.drag = {
+        kind: 'route',
+        id: route.id,
+        start: point,
+        original: route.points.map((p) => ({ ...p })),
+        moved: false,
+      };
       canvas.setPointerCapture(event.pointerId);
     } else {
       state.selected = null;
@@ -639,6 +652,16 @@ export function init() {
     state.cursor = point;
 
     if (state.drag) {
+      // El historial solo se guarda cuando el arrastre mueve de verdad: un clic
+      // para seleccionar no debe consumir un paso de "Deshacer".
+      if (!state.drag.moved) {
+        const from = state.drag.start;
+        if (Math.hypot(point.x - from.x, point.y - from.y) < 3) {
+          return;
+        }
+        state.drag.moved = true;
+        pushHistory();
+      }
       if (state.drag.kind === 'marker') {
         const marker = state.markers.find((m) => m.id === state.drag.id);
         if (marker) {
@@ -815,6 +838,9 @@ export function init() {
         }
 
         const finish = () => {
+          if (imageName) {
+            imageName.textContent = state.imageData ? 'Imagen incluida en el proyecto' : 'Sin imagen';
+          }
           draw();
           renderLists();
           showMessage('Proyecto cargado.', 'ok');
@@ -955,7 +981,13 @@ export function init() {
       return;
     }
     const reader = new FileReader();
-    reader.onload = () => loadImage(reader.result, () => showMessage('Plano cargado.', 'ok'));
+    reader.onload = () =>
+      loadImage(reader.result, () => {
+        if (imageName) {
+          imageName.textContent = file.name;
+        }
+        showMessage('Plano cargado.', 'ok');
+      });
     reader.onerror = () => showMessage('No se pudo leer la imagen.', 'bad');
     reader.readAsDataURL(file);
     imageInput.value = '';
@@ -964,6 +996,9 @@ export function init() {
   root.querySelector('[data-pl-export-json]').addEventListener('click', exportProject);
   root.querySelector('[data-pl-export-png]').addEventListener('click', exportPng);
   root.querySelector('[data-pl-import]').addEventListener('click', () => projectFile.click());
+  if (imageButton) {
+    imageButton.addEventListener('click', () => imageInput.click());
+  }
   projectFile.addEventListener('change', () => {
     const file = projectFile.files && projectFile.files[0];
     if (file) {
@@ -975,7 +1010,7 @@ export function init() {
   controller = { root, onKey };
 
   state.pxToM = Number(escalaInput.value) > 0 ? Number(escalaInput.value) : 0.05;
-  applyZoom();
+  fitZoom();
   draw();
   renderLists();
   updateToolUI();

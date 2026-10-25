@@ -24,6 +24,10 @@ const PAGES_DIR = 'pages/';
 const APP_SELECTOR = '#app';
 
 let appEl = null;
+/* Identificador de la navegación en curso. Si el usuario cambia de ruta antes
+ * de que termine la carga anterior, la respuesta vieja se descarta para que no
+ * pise la vista actual. */
+let navigationId = 0;
 
 function getRouteFromHash() {
   const raw = window.location.hash.replace(/^#\/?/, '');
@@ -72,7 +76,7 @@ async function importRouteModule(route) {
   try {
     const module = await import(`./modules/${route}.js`);
     if (module && typeof module.init === 'function') {
-      module.init();
+      await module.init();
     }
   } catch (error) {
     console.error(`[router] No se pudo cargar el módulo de "${route}":`, error);
@@ -90,10 +94,14 @@ export async function navigate(route) {
   const resolved = resolveRoute(route) || DEFAULT_ROUTE;
   const meta = ROUTES[resolved];
 
+  const navigation = ++navigationId;
   appEl.setAttribute('aria-busy', 'true');
 
   try {
     const html = await loadView(resolved);
+    if (navigation !== navigationId) {
+      return;
+    }
     appEl.innerHTML = html;
     appEl.setAttribute('aria-busy', 'false');
     document.title = `${meta.title} · Net Tools Web`;
@@ -103,8 +111,11 @@ export async function navigate(route) {
     document.dispatchEvent(
       new CustomEvent('app:route-changed', { detail: { route: resolved } })
     );
-    importRouteModule(resolved);
+    await importRouteModule(resolved);
   } catch (error) {
+    if (navigation !== navigationId) {
+      return;
+    }
     appEl.setAttribute('aria-busy', 'false');
     renderError(resolved, error);
   }

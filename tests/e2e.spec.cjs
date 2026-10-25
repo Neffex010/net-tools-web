@@ -15,7 +15,9 @@ const path = require('path');
 const { createTestServer } = require('./server.js');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
-const CACHE_NAME = 'net-tools-web-1.0.2';
+const SW_SOURCE = fs.readFileSync(path.join(PROJECT_ROOT, 'service-worker.js'), 'utf8');
+const APP_VERSION = (/APP_VERSION\s*=\s*'([^']+)'/.exec(SW_SOURCE) || [])[1];
+const CACHE_NAME = 'net-tools-web-' + APP_VERSION;
 const results = [];
 
 function check(name, cond, extra) {
@@ -64,8 +66,8 @@ function check(name, cond, extra) {
     }, CACHE_NAME);
 
     check('Cache ' + CACHE_NAME + ' presente', swState.keys.includes(CACHE_NAME));
-    check('Cache anterior 1.0.1 eliminada', !swState.keys.includes('net-tools-web-1.0.1'));
-    check('meta ntw-version = 1.0.2', swState.meta === '1.0.2');
+    check('Solo queda la cache de la version actual', swState.keys.every((name) => name === CACHE_NAME), swState.keys);
+    check('meta ntw-version = ' + APP_VERSION, swState.meta === APP_VERSION);
     check('Banner de actualizacion oculto', swState.bannerHidden === true);
     check('Precache contiene js/utils.js', swState.urls.includes('js/utils.js'));
     const hasEmpty = ['css/components.css', 'js/libs/fabric.min.js', 'js/libs/jspdf.umd.min.js'].some((f) =>
@@ -169,6 +171,19 @@ function check(name, cond, extra) {
     check('Conexiones: CSV con BOM y cabecera', cxnContent.startsWith('\uFEFF') && cxnContent.includes('Id;Punto;Nombre punto;Switch'));
     check('Conexiones: CSV contiene C-001 y SW-01', cxnContent.includes('C-001') && cxnContent.includes('SW-01'));
 
+    // ---- Conexiones: búsqueda ----
+    check('Conexiones: campo de búsqueda presente', await page.evaluate(() => !!document.querySelector('[data-cxn-search]')));
+    await page.fill('[data-cxn-search]', 'sw-01');
+    const filteredRows = await page.evaluate(() => document.querySelectorAll('[data-cxn-body] tr').length);
+    check('Conexiones: la búsqueda filtra por switch', filteredRows === 1, filteredRows);
+    await page.fill('[data-cxn-search]', 'zzz');
+    const noMatch = await page.evaluate(() => ({
+      rows: document.querySelectorAll('[data-cxn-body] tr').length,
+      empty: document.querySelector('[data-cxn-empty]').hidden === false,
+    }));
+    check('Conexiones: búsqueda sin resultados avisa', noMatch.rows === 0 && noMatch.empty, noMatch);
+    await page.fill('[data-cxn-search]', '');
+
     // ---- Offline ----
     await context.setOffline(true);
     await page.goto(BASE + '#/estandares', { waitUntil: 'load' }).catch(() => {});
@@ -181,6 +196,106 @@ function check(name, cond, extra) {
     );
     check('Offline: pagina estandares carga desde cache', offlineOk);
     await context.setOffline(false);
+
+    // ---- Planos: el canvas se ajusta al ancho disponible ----
+    await page.goto(BASE + '#/planos', { waitUntil: 'load' });
+    await page.waitForTimeout(500);
+    const fit = await page.evaluate(() => {
+      const canvas = document.querySelector('[data-pl-canvas]');
+      const wrap = document.querySelector('[data-pl-canvas-wrap]');
+      if (!canvas || !wrap) return null;
+      return { canvas: Math.round(canvas.getBoundingClientRect().width), wrap: wrap.clientWidth };
+    });
+    check('Planos: canvas ajustado al ancho disponible', !!fit && fit.canvas <= fit.wrap + 1, fit);
+
+    // ---- Dashboard: tarjetas enlazadas y guia de primer uso ----
+    await page.goto(BASE + '#/dashboard', { waitUntil: 'load' });
+    await page.waitForTimeout(400);
+    const dashLinks = await page.evaluate(() => ({
+      hrefs: Array.from(document.querySelectorAll('.stats a.stat')).map((a) => a.getAttribute('href')),
+      hintHidden: document.querySelector('[data-dash-hint]').hidden,
+    }));
+    check(
+      'Dashboard: tarjetas enlazan a Inventario/Pruebas/Conexiones/Etiquetas',
+      dashLinks.hrefs.join(',') === '#/inventario,#/pruebas,#/conexiones,#/etiquetas',
+      dashLinks.hrefs
+    );
+    check('Dashboard: guia de primer uso oculta si hay datos', dashLinks.hintHidden === true);
+
+    // ---- Inventario: borrar un punto elimina sus conexiones ----
+    await page.goto(BASE + '#/inventario', { waitUntil: 'load' });
+    await page.waitForTimeout(400);
+    page.once('dialog', (dialog) => dialog.accept());
+    await page.click('[data-delete="p1"]');
+    await page.waitForTimeout(300);
+    const afterDelete = await page.evaluate(() => ({
+      inventario: JSON.parse(localStorage.getItem('ntw:inventario') || '[]').length,
+      conexiones: JSON.parse(localStorage.getItem('ntw:conexiones') || '[]').length,
+    }));
+    check(
+      'Inventario: borrar punto elimina sus conexiones',
+      afterDelete.inventario === 0 && afterDelete.conexiones === 0,
+      afterDelete
+    );
+
+    // ---- Dashboard vacio: guia de primer uso visible ----
+    await page.evaluate(() => localStorage.clear());
+    await page.goto(BASE + '#/dashboard', { waitUntil: 'load' });
+    await page.waitForTimeout(400);
+    const emptyDash = await page.evaluate(() => ({
+      hintVisible: !document.querySelector('[data-dash-hint]').hidden,
+      inv: document.querySelector('[data-dash-inventario]').textContent,
+    }));
+    check('Dashboard: guia visible con la app vacia', emptyDash.hintVisible && emptyDash.inv === '0', emptyDash);
+
+    // ---- Tema: sigue al sistema si no hay preferencia guardada ----
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForTimeout(300);
+    const themeDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.waitForTimeout(250);
+    const themeLight = await page.evaluate(() => document.documentElement.classList.contains('dark'));
+    check('Tema: sigue al sistema sin preferencia guardada', themeDark === true && themeLight === false, {
+      themeDark,
+      themeLight,
+    });
+
+    // ---- Menu movil: inert y foco ----
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForTimeout(400);
+    const menuClosed = await page.evaluate(() => {
+      const sidebar = document.getElementById('sidebar');
+      return {
+        inert: sidebar.inert,
+        ariaHidden: sidebar.getAttribute('aria-hidden'),
+        expanded: document.getElementById('menu-toggle').getAttribute('aria-expanded'),
+      };
+    });
+    check('Menu movil: cerrado queda inert', menuClosed.inert === true && menuClosed.ariaHidden === 'true', menuClosed);
+    await page.click('#menu-toggle');
+    const menuOpen = await page.evaluate(() => ({
+      inert: document.getElementById('sidebar').inert,
+      expanded: document.getElementById('menu-toggle').getAttribute('aria-expanded'),
+      focusInside: document.getElementById('sidebar').contains(document.activeElement),
+    }));
+    check(
+      'Menu movil: abrir lo activa y mueve el foco',
+      menuOpen.inert === false && menuOpen.expanded === 'true' && menuOpen.focusInside === true,
+      menuOpen
+    );
+    await page.keyboard.press('Escape');
+    const menuReclosed = await page.evaluate(() => ({
+      inert: document.getElementById('sidebar').inert,
+      focusOnToggle: document.activeElement === document.getElementById('menu-toggle'),
+    }));
+    check(
+      'Menu movil: Escape cierra y devuelve el foco',
+      menuReclosed.inert === true && menuReclosed.focusOnToggle === true,
+      menuReclosed
+    );
+    await page.setViewportSize({ width: 1280, height: 720 });
 
     const pageErrors = errors.filter((e) => !e.toLowerCase().includes('favicon'));
     check('Sin errores de consola', pageErrors.length === 0, pageErrors);

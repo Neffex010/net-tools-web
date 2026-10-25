@@ -42,6 +42,12 @@
       align-items: end;
     }
 
+    @media (min-width: 1024px) {
+      [data-page="etiquetas"] .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
     [data-page="etiquetas"] .field {
       display: grid;
       gap: var(--space-1);

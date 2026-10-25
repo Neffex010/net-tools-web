@@ -42,6 +42,12 @@
       align-items: end;
     }
 
+    @media (min-width: 1024px) {
+      [data-page="conexiones"] .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
     [data-page="conexiones"] .field {
       display: grid;
       gap: var(--space-1);
@@ -86,6 +92,11 @@
       flex-wrap: wrap;
       gap: var(--space-2);
       align-items: center;
+    }
+
+    [data-page="conexiones"] .search {
+      flex: 1 1 14rem;
+      max-width: 22rem;
     }
 
     [data-page="conexiones"] .btn {
@@ -249,6 +260,13 @@
   <section class="card" aria-labelledby="cxn-list-title">
     <h2 id="cxn-list-title">Conexiones registradas</h2>
     <div class="actions">
+      <input
+        type="search"
+        class="search"
+        data-cxn-search
+        placeholder="Buscar conexiones…"
+        aria-label="Buscar conexiones por punto, switch, puerto o cable"
+      >
       <span class="summary" data-cxn-summary aria-live="polite"></span>
       <button type="button" class="btn" data-cxn-export style="margin-inline-start:auto">Exportar JSON</button>
       <button type="button" class="btn" data-cxn-csv>Exportar CSV</button>

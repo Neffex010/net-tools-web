@@ -116,7 +116,7 @@ export function init() {
 
   function fillPuntoOptions() {
     fillSelect(puntoSelect, loadPuntos(), {
-      placeholder: '— Elegir un punto del inventario —',
+      placeholder: '— Punto del inventario —',
       valueOf: (punto) => punto.id,
       labelOf: (punto) => {
         const nombre = String(punto.nombre ?? '(sin nombre)').trim();
@@ -160,7 +160,7 @@ export function init() {
   function fillConexionOptions() {
     const conexiones = loadConexiones();
     fillSelect(conexionSelect, conexiones, {
-      placeholder: conexiones.length === 0 ? 'No hay conexiones guardadas' : '— Elegir una conexión (opcional) —',
+      placeholder: conexiones.length === 0 ? 'No hay conexiones guardadas' : '— Conexión (opcional) —',
       disabledWhenEmpty: true,
       valueOf: (cxn) => cxn.id,
       labelOf: (cxn) => {
@@ -200,7 +200,14 @@ export function init() {
 
   function nextId() {
     const taken = new Set(labels.map((label) => label.id));
-    let index = labels.length + 1;
+    let max = 0;
+    labels.forEach((label) => {
+      const match = /^P-(\d+)$/.exec(label.id);
+      if (match) {
+        max = Math.max(max, Number(match[1]));
+      }
+    });
+    let index = max + 1;
     let id = `P-${String(index).padStart(3, '0')}`;
     while (taken.has(id)) {
       index += 1;

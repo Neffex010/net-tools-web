@@ -24,18 +24,30 @@ export function init() {
   const pruebasEl = root.querySelector('[data-dash-pruebas]');
   const conexionesEl = root.querySelector('[data-dash-conexiones]');
   const etiquetasEl = root.querySelector('[data-dash-etiquetas]');
+  const hintEl = root.querySelector('[data-dash-hint]');
+
+  const counts = {
+    inventario: countItems('inventario'),
+    pruebas: countItems('pruebas'),
+    conexiones: countItems('conexiones'),
+    etiquetas: countItems('etiquetas'),
+  };
 
   if (inventarioEl) {
-    inventarioEl.textContent = String(countItems('inventario'));
+    inventarioEl.textContent = String(counts.inventario);
   }
   if (pruebasEl) {
-    pruebasEl.textContent = String(countItems('pruebas'));
+    pruebasEl.textContent = String(counts.pruebas);
   }
   if (conexionesEl) {
-    conexionesEl.textContent = String(countItems('conexiones'));
+    conexionesEl.textContent = String(counts.conexiones);
   }
   if (etiquetasEl) {
-    etiquetasEl.textContent = String(countItems('etiquetas'));
+    etiquetasEl.textContent = String(counts.etiquetas);
+  }
+  // Guía de primer uso: solo cuando la app está vacía.
+  if (hintEl) {
+    hintEl.hidden = Object.values(counts).some((count) => count > 0);
   }
 }
 

@@ -45,9 +45,11 @@ export function loadConexiones() {
   return getList('conexiones');
 }
 
-/** Fecha de hoy como "AAAA-MM-DD" (UTC), útil para nombres de archivo. */
+/** Fecha de hoy como "AAAA-MM-DD" en hora local, útil para nombres de archivo. */
 export function todayStamp() {
-  return new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 }
 
 /**
@@ -61,7 +63,8 @@ export function downloadBlob(blob, filename) {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+  // Revocar de inmediato puede cancelar la descarga en algunos navegadores.
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 /** Convierte texto en un archivo descargable (JSON, CSV, etc.). */

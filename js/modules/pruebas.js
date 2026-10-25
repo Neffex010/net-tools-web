@@ -184,7 +184,7 @@ export function init() {
   function fillConexionOptions() {
     const conexiones = loadConexiones();
     fillSelect(conexionSelect, conexiones, {
-      placeholder: conexiones.length === 0 ? 'No hay conexiones guardadas' : '— Elegir una conexión (opcional) —',
+      placeholder: conexiones.length === 0 ? 'No hay conexiones guardadas' : '— Conexión (opcional) —',
       disabledWhenEmpty: true,
       valueOf: (cxn) => cxn.id,
       labelOf: (cxn) => {

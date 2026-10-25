@@ -37,6 +37,13 @@
       align-items: end;
     }
 
+    /* En escritorio, formularios de 4 columnas: más legibles que una fila de 7. */
+    @media (min-width: 1024px) {
+      [data-page="pruebas"] .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
     [data-page="pruebas"] .field {
       display: grid;
       gap: var(--space-1);

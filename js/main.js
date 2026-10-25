@@ -3,6 +3,15 @@ import { initRouter } from './router.js';
 const THEME_KEY = 'nt.theme';
 
 /* ---------- Tema ---------- */
+function hasStoredTheme() {
+  try {
+    const stored = localStorage.getItem(THEME_KEY);
+    return stored === 'dark' || stored === 'light';
+  } catch (error) {
+    return false;
+  }
+}
+
 function getInitialTheme() {
   try {
     const stored = localStorage.getItem(THEME_KEY);
@@ -37,6 +46,14 @@ function persistTheme(theme) {
 function initTheme() {
   applyTheme(getInitialTheme());
 
+  // Sin preferencia guardada, el tema sigue al sistema en vivo.
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  media.addEventListener('change', (event) => {
+    if (!hasStoredTheme()) {
+      applyTheme(event.matches ? 'dark' : 'light');
+    }
+  });
+
   const toggle = document.getElementById('theme-toggle');
   if (!toggle) {
     return;
@@ -59,13 +76,31 @@ function initSidebar() {
     return;
   }
 
-  const isMobile = () => window.matchMedia('(max-width: 899px)').matches;
+  const mobileQuery = window.matchMedia('(max-width: 1023px)');
+  const isMobile = () => mobileQuery.matches;
+
+  /* En móvil, el menú cerrado queda fuera de pantalla: se marca `inert` para
+   * que el teclado y los lectores de pantalla no entren en enlaces invisibles. */
+  function syncSidebarState() {
+    const hidden = isMobile() && !sidebar.classList.contains('is-open');
+    sidebar.toggleAttribute('inert', hidden);
+    if (hidden) {
+      sidebar.setAttribute('aria-hidden', 'true');
+    } else {
+      sidebar.removeAttribute('aria-hidden');
+    }
+  }
 
   function openSidebar() {
     sidebar.classList.add('is-open');
     backdrop.classList.add('is-visible');
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'Cerrar menú');
+    syncSidebarState();
+    const firstLink = sidebar.querySelector('a[href], button:not([disabled])');
+    if (firstLink) {
+      firstLink.focus();
+    }
   }
 
   function closeSidebar() {
@@ -76,6 +111,10 @@ function initSidebar() {
     backdrop.classList.remove('is-visible');
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'Abrir menú');
+    syncSidebarState();
+    if (isMobile()) {
+      toggle.focus();
+    }
   }
 
   toggle.addEventListener('click', () => {
@@ -102,11 +141,12 @@ function initSidebar() {
 
   document.addEventListener('app:route-changed', closeSidebar);
 
-  window.addEventListener('resize', () => {
-    if (!isMobile()) {
-      closeSidebar();
-    }
+  mobileQuery.addEventListener('change', () => {
+    closeSidebar();
+    syncSidebarState();
   });
+
+  syncSidebarState();
 }
 
 /* ---------- Arranque ---------- */

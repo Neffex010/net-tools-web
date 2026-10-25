@@ -113,7 +113,8 @@ export function init() {
     const names = keys();
     const total = names.reduce((acc, name) => {
       try {
-        return acc + JSON.stringify(get(name)).length;
+        // Bytes UTF-8 reales (no longitud en caracteres).
+        return acc + new Blob([JSON.stringify(get(name) ?? null)]).size;
       } catch (error) {
         return acc;
       }

@@ -5,7 +5,7 @@
  */
 
 import { get, set } from '../store.js';
-import { buildCsv, downloadText, escapeHtml, makeMessage, pluralize, todayStamp, uid } from '../utils.js';
+import { buildCsv, downloadText, escapeHtml, loadConexiones, makeMessage, pluralize, todayStamp, uid } from '../utils.js';
 
 const PAGE_SELECTOR = '[data-page="inventario"]';
 const STORAGE_KEY = 'inventario';
@@ -207,15 +207,31 @@ export function init() {
     if (!item) {
       return;
     }
-    if (!window.confirm(`¿Eliminar el punto "${item.nombre}"?`)) {
+
+    // Un punto puede estar referenciado por conexiones: se avisa y se eliminan
+    // juntas para no dejar enlaces huérfanos apuntando a un punto inexistente.
+    const conexiones = loadConexiones().filter((cxn) => String(cxn.punto ?? '') === id);
+    const aviso = conexiones.length
+      ? `\nTambién se eliminarán ${conexiones.length} ${pluralize(conexiones.length, 'conexión', 'conexiones')} que apuntan a este punto.`
+      : '';
+    if (!window.confirm(`¿Eliminar el punto "${item.nombre}"?${aviso}`)) {
       return;
+    }
+
+    if (conexiones.length) {
+      set('conexiones', loadConexiones().filter((cxn) => String(cxn.punto ?? '') !== id));
     }
     saveList(list.filter((entry) => entry.id !== id));
     if (editingId === id) {
       resetForm();
     }
     render();
-    showMessage(`Punto "${item.nombre}" eliminado.`, 'ok');
+    showMessage(
+      conexiones.length
+        ? `Punto "${item.nombre}" y ${conexiones.length} ${pluralize(conexiones.length, 'conexión', 'conexiones')} eliminados.`
+        : `Punto "${item.nombre}" eliminado.`,
+      'ok'
+    );
   }
 
   function exportJson() {

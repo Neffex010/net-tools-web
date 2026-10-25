@@ -42,6 +42,7 @@ export function init() {
   const summary = root.querySelector('[data-cxn-summary]');
   const empty = root.querySelector('[data-cxn-empty]');
   const message = root.querySelector('[data-cxn-message]');
+  const searchInput = root.querySelector('[data-cxn-search]');
 
   let list = get(STORAGE_KEY, []);
   if (!Array.isArray(list)) {
@@ -50,6 +51,7 @@ export function init() {
   list = list.map(normalize);
 
   let editingId = null;
+  let query = '';
 
   const showMessage = makeMessage(message);
 
@@ -97,8 +99,35 @@ export function init() {
       : null;
   }
 
+  function normalizeText(value) {
+    return String(value ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function matchesQuery(entry) {
+    if (!query) {
+      return true;
+    }
+    const haystack = normalizeText(
+      [
+        entry.puntoNombre,
+        entry.switchId,
+        entry.puertoSwitch,
+        entry.panel,
+        entry.puertoPanel,
+        entry.cable,
+        entry.notas,
+      ].join(' ')
+    );
+    return haystack.includes(query);
+  }
+
   function render() {
-    body.innerHTML = list
+    const filtered = list.filter(matchesQuery);
+
+    body.innerHTML = filtered
       .map((entry) => {
         const punto = entry.puntoNombre
           ? escapeHtml(entry.puntoNombre)
@@ -131,9 +160,17 @@ export function init() {
       summary.textContent = '';
       return;
     }
+    if (filtered.length === 0) {
+      empty.hidden = false;
+      empty.textContent = 'No hay conexiones que coincidan con la búsqueda.';
+      summary.textContent = `0 de ${list.length}`;
+      return;
+    }
     empty.hidden = true;
-    const uniquePuntos = new Set(list.map((entry) => entry.punto).filter(Boolean)).size;
-    summary.textContent = `Total: ${list.length} ${pluralize(list.length, 'conexión', 'conexiones')} · Puntos enlazados: ${uniquePuntos}`;
+    const uniquePuntos = new Set(filtered.map((entry) => entry.punto).filter(Boolean)).size;
+    summary.textContent = query
+      ? `Mostrando ${filtered.length} de ${list.length} ${pluralize(list.length, 'conexión', 'conexiones')} · Puntos enlazados: ${uniquePuntos}`
+      : `Total: ${list.length} ${pluralize(list.length, 'conexión', 'conexiones')} · Puntos enlazados: ${uniquePuntos}`;
   }
 
   function resetForm() {
@@ -262,6 +299,11 @@ export function init() {
     showMessage(`${list.length} ${pluralize(list.length, 'conexión', 'conexiones')} ${pluralize(list.length, 'exportada', 'exportadas')} a CSV.`, 'ok');
   }
 
+  searchInput.addEventListener('input', () => {
+    query = normalizeText(searchInput.value.trim());
+    render();
+  });
+
   form.addEventListener('submit', handleSubmit);
 
   cancelButton.addEventListener('click', () => {
@@ -291,6 +333,8 @@ export function init() {
       return;
     }
     list = [];
+    searchInput.value = '';
+    query = '';
     resetForm();
     save();
     render();
