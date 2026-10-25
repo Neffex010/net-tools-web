@@ -1,9 +1,29 @@
 ﻿# Net Tools Web — PWA de diagnóstico de red para técnicos de campo
 
+[![Demo](https://img.shields.io/badge/demo-en%20vivo-1f6feb)](https://neffex010.github.io/net-tools-web/)
+[![Tests](https://img.shields.io/badge/tests-35%2F35-brightgreen)](#cómo-correr-los-tests)
+[![Licencia](https://img.shields.io/badge/licencia-MIT-blue)](LICENSE)
+
 Aplicación web **100 % frontend** (sin backend ni base de datos) para redes,
 cableado, ponchado e instalación. Funciona instalada como PWA y sin conexión:
 los datos viven en `localStorage` (claves `ntw:*`) o en archivos JSON exportados
 por el usuario.
+
+## Capturas
+
+![Dashboard de Net Tools Web](docs/screenshots/dashboard.png)
+
+| Ponchado | Calculadoras |
+|---|---|
+| ![Guía y simulador de ponchado](docs/screenshots/ponchado.png) | ![Calculadoras de red](docs/screenshots/calculadoras.png) |
+
+| Etiquetas QR | Diagnóstico |
+|---|---|
+| ![Etiquetas QR](docs/screenshots/etiquetas.png) | ![Diagnóstico de red](docs/screenshots/diagnostico.png) |
+
+<p align="center">
+  <img src="docs/screenshots/mobile.png" alt="Dashboard en móvil" width="300">
+</p>
 
 ## Para quién es
 
@@ -69,17 +89,19 @@ npm test      # corre tests/e2e.spec.cjs
 ```
 
 La suite levanta el servidor en un puerto efímero, instala el service worker en
-un perfil limpio y verifica: precache versionado, banner de actualización,
-dashboard, vinculación Conexiones → Pruebas/Etiquetas, exportaciones CSV con BOM,
-modo offline y ausencia de errores de consola.
+un perfil limpio y verifica **35 comprobaciones**: precache versionado, banner de
+actualización, dashboard, vinculación Conexiones → Pruebas/Etiquetas, búsqueda en
+Conexiones, exportaciones CSV con BOM, borrado en cascada de puntos, modo offline,
+tema del sistema, menú móvil accesible y ausencia de errores de consola.
 
 ## Demo
 
-> **URL de demo:** `[PENDIENTE: añadir la URL real cuando se publique]`
+**https://neffex010.github.io/net-tools-web/**
 
-El proyecto es estático y puede alojarse en cualquier hosting de archivos
-(GitHub Pages, Netlify, Cloudflare Pages…). No hay configuración de deploy en el
-repositorio todavía.
+El proyecto es estático y se publica con **GitHub Pages** desde la rama `main`
+(raíz del repositorio) en cada push. Todas las rutas son relativas, así que
+también funciona en Netlify, Cloudflare Pages o cualquier hosting de archivos
+sin cambios.
 
 ## Aviso legal
 
@@ -106,7 +128,8 @@ responsable. El sondeo de sistemas de terceros sin permiso puede ser ilegal.
 - **Planos** no persiste entre sesiones: la exportación es en memoria (descarga).
 - **CSP**: `script-src 'self'` estricto; `style-src` incluye `'unsafe-inline'`
   porque las vistas y plantillas inyectan su propio `<style>`.
-- No hay URL de demo ni pipeline de deploy en el repo (ver *Demo*).
+- **Sin sincronización entre pestañas**: los contadores del dashboard se
+  actualizan al navegar, no en vivo (pendiente en el roadmap).
 
 ## Estructura
 
@@ -124,8 +147,15 @@ docs/       -> documentación del proyecto
 ## Notas de mantenimiento
 
 - Al publicar cambios: subir `APP_VERSION` en `service-worker.js` y el meta
-  `ntw-version` en `index.html` (deben coincidir).
+  `ntw-version` en `index.html` (deben coincidir). La suite de pruebas lee la
+  versión del propio service worker, así que no hay que tocarla.
 - Los CSV de Inventario y Conexiones usan `;` + BOM UTF-8 (abren directo en Excel
   es-MX); el CSV de Pruebas usa `,`.
+- Las capturas de `docs/screenshots/` se generan con Playwright sobre datos de
+  ejemplo; conviene regenerarlas si cambia la interfaz.
 - Más detalles en [docs/arquitectura.md](docs/arquitectura.md),
   [docs/guia-uso.md](docs/guia-uso.md) y [docs/roadmap.md](docs/roadmap.md).
+
+## Licencia
+
+MIT © 2026 Neffex010. Ver [LICENSE](LICENSE).
