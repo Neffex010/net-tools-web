@@ -78,6 +78,14 @@ function check(name, cond, extra) {
       'Precache contiene index.html e iconos',
       swState.urls.includes('index.html') && swState.urls.includes('assets/icons/icon-512.png')
     );
+    check(
+      'Precache contiene las fuentes autoalojadas',
+      [
+        'assets/fonts/space-grotesk-latin.woff2',
+        'assets/fonts/ibm-plex-mono-400-latin.woff2',
+        'assets/fonts/ibm-plex-mono-500-latin.woff2',
+      ].every((file) => swState.urls.includes(file))
+    );
     check('Titulo dinamico por seccion (Dashboard)', (await page.title()) === 'Dashboard · Net Tools Web');
 
     // ---- Datos de prueba ----
@@ -212,14 +220,16 @@ function check(name, cond, extra) {
     await page.goto(BASE + '#/dashboard', { waitUntil: 'load' });
     await page.waitForTimeout(400);
     const dashLinks = await page.evaluate(() => ({
-      hrefs: Array.from(document.querySelectorAll('.stats a.stat')).map((a) => a.getAttribute('href')),
+      hrefs: Array.from(document.querySelectorAll('.readout a.readout__item')).map((a) => a.getAttribute('href')),
       hintHidden: document.querySelector('[data-dash-hint]').hidden,
     }));
     check(
-      'Dashboard: tarjetas enlazan a Inventario/Pruebas/Conexiones/Etiquetas',
-      dashLinks.hrefs.join(',') === '#/inventario,#/pruebas,#/conexiones,#/etiquetas',
+      'Dashboard: tarjetas enlazan a Inventario/Conexiones/Etiquetas/Pruebas',
+      dashLinks.hrefs.join(',') === '#/inventario,#/conexiones,#/etiquetas,#/pruebas',
       dashLinks.hrefs
     );
+    const modCount = await page.evaluate(() => document.querySelectorAll('.mods__grid .mod').length);
+    check('Dashboard: indice con 11 modulos', modCount === 11, modCount);
     check('Dashboard: guia de primer uso oculta si hay datos', dashLinks.hintHidden === true);
 
     // ---- Inventario: borrar un punto elimina sus conexiones ----

@@ -1,358 +1,557 @@
 <section class="page" data-page="dashboard">
   <style>
-    [data-page="dashboard"] .bento {
+    /* Panel de inicio: lectura tipo instrumento + índice de módulos. */
+    [data-page="dashboard"] {
       display: grid;
       gap: var(--bento-gap);
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        "hero"
-        "stats"
-        "mods";
     }
 
-    [data-page="dashboard"] .bento__hero { grid-area: hero; }
-    [data-page="dashboard"] .bento__stats { grid-area: stats; }
-    [data-page="dashboard"] .bento__mods { grid-area: mods; }
-
-    /* ---- Hero: acceso rápido a Diagnóstico ---- */
-    .hero-card {
+    #app [data-page="dashboard"] .page-head {
       display: grid;
-      align-content: center;
       gap: var(--space-2);
-      padding: clamp(1rem, 2vw, 1.75rem);
+    }
+
+    #app [data-page="dashboard"] .page-head h1 {
+      font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+    }
+
+    [data-page="dashboard"] .lead {
+      max-width: 62ch;
+      color: var(--color-text-muted);
+    }
+
+    /* ---- Lectura de contadores ---- */
+    [data-page="dashboard"] .readout {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: hidden;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+
+    [data-page="dashboard"] .readout__item {
+      display: grid;
+      gap: 1px;
+      padding: var(--space-3) var(--space-4);
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
       color: var(--color-text);
+      transition: background-color var(--transition-fast);
+    }
+
+    [data-page="dashboard"] .readout__item:nth-child(2n) {
+      border-right: 0;
+    }
+
+    [data-page="dashboard"] .readout__item:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+
+    [data-page="dashboard"] .readout__item:hover {
+      background-color: var(--color-hover);
+    }
+
+    [data-page="dashboard"] .readout__item:hover .readout__value {
+      color: var(--color-primary);
+    }
+
+    [data-page="dashboard"] .readout__index {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      opacity: 0.7;
+    }
+
+    [data-page="dashboard"] .readout__value {
+      font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+      font-weight: var(--fw-bold);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      transition: color var(--transition-fast);
+    }
+
+    [data-page="dashboard"] .readout__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="dashboard"] .dash-hint {
+      margin: 0;
+      padding: var(--space-2) var(--space-3);
+      border-inline-start: 2px solid var(--color-accent);
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="dashboard"] .dash-hint a {
+      color: var(--color-primary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ---- Hero de Diagnóstico ---- */
+    [data-page="dashboard"] .hero-card {
+      position: relative;
+      display: grid;
+      gap: var(--space-4);
+      padding: clamp(1.15rem, 2.2vw, 1.9rem);
+      overflow: hidden;
       background:
-        linear-gradient(135deg, var(--color-active), transparent 62%),
+        radial-gradient(90% 130% at 100% 0%, var(--color-active), transparent 58%),
         var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
-        transform var(--transition-fast);
     }
 
-    .hero-card:hover {
-      border-color: var(--color-primary);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
+    /* Marcas de esquina, como en un plano técnico. */
+    [data-page="dashboard"] .hero-card::before,
+    [data-page="dashboard"] .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--color-border-strong);
+      border-style: solid;
+      pointer-events: none;
     }
 
-    .hero-card:focus-visible {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
+    [data-page="dashboard"] .hero-card::before {
+      top: 8px;
+      left: 8px;
+      border-width: 1px 0 0 1px;
     }
 
-    .hero-card:active {
-      transform: translateY(0);
+    [data-page="dashboard"] .hero-card::after {
+      right: 8px;
+      bottom: 8px;
+      border-width: 0 1px 1px 0;
     }
 
-    .hero-card__badge {
-      justify-self: start;
-      padding: 2px var(--space-2);
-      font-size: var(--fs-xs);
-      font-weight: var(--fw-bold);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-primary);
-      background-color: var(--color-active);
-      border-radius: var(--radius-full);
+    [data-page="dashboard"] .hero-card__body {
+      display: grid;
+      gap: var(--space-3);
+      align-content: center;
     }
 
-    .hero-card__title {
-      font-size: clamp(1.15rem, 2vw, 1.6rem);
-      font-weight: var(--fw-bold);
-      line-height: 1.15;
+    [data-page="dashboard"] .hero-card h2 {
+      max-width: 20ch;
+      font-size: clamp(1.5rem, 3vw, 2.15rem);
+      line-height: 1.04;
+      letter-spacing: -0.035em;
     }
 
-    .hero-card__desc {
-      font-size: var(--fs-sm);
+    [data-page="dashboard"] .hero-card__text {
+      max-width: 48ch;
+      font-size: 0.95rem;
       color: var(--color-text-muted);
-      max-width: 60ch;
     }
 
-    .hero-card__links {
+    [data-page="dashboard"] .chips {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--space-2);
-      margin-top: var(--space-1);
+      gap: 6px;
     }
 
-    .hero-card__chip {
-      padding: 2px var(--space-2);
-      font-size: var(--fs-xs);
-      font-weight: var(--fw-medium);
-      color: var(--color-text-muted);
-      background-color: var(--color-surface-2);
+    [data-page="dashboard"] .chip {
+      padding: 3px 9px;
       border: 1px solid var(--color-border);
       border-radius: var(--radius-full);
-    }
-
-    .hero-card__cta {
-      margin-top: var(--space-2);
-      font-size: var(--fs-sm);
-      font-weight: var(--fw-bold);
-      color: var(--color-primary);
-    }
-
-    /* ---- Stats ---- */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--bento-gap);
-      align-content: start;
-    }
-
-    .stat {
-      display: grid;
-      gap: 2px;
-      padding: var(--space-3) var(--space-4);
-      background-color: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .stat__value {
-      font-size: clamp(1.5rem, 3vw, 2.25rem);
-      font-weight: var(--fw-bold);
-      line-height: 1;
-      color: var(--color-primary);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .stat__label {
-      font-size: var(--fs-xs);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--color-text-muted);
     }
 
-    /* Las tarjetas son enlaces: llevan al módulo que resumen. */
-    a.stat {
-      color: var(--color-text);
-      transition: transform var(--transition-fast), border-color var(--transition-fast),
-        box-shadow var(--transition-fast), background-color var(--transition-fast);
-    }
-
-    a.stat:hover {
-      transform: translateY(-2px);
-      border-color: var(--color-primary);
-      box-shadow: var(--shadow-md);
-      background-color: var(--color-surface-2);
-    }
-
-    a.stat:active {
-      transform: translateY(0);
-    }
-
-    .stats__hint {
-      grid-column: 1 / -1;
-      margin: 0;
-      font-size: var(--fs-sm);
-      color: var(--color-text-muted);
-    }
-
-    .stats__hint a {
-      color: var(--color-primary);
-      font-weight: var(--fw-medium);
-      text-decoration: underline;
-    }
-
-    /* ---- Módulos ---- */
-    .modules {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: var(--bento-gap);
-    }
-
-    .module-card {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-template-areas:
-        "icon title"
-        "icon desc";
+    [data-page="dashboard"] .hero-card__cta {
+      justify-self: start;
+      display: inline-flex;
       align-items: center;
-      column-gap: var(--space-2);
-      row-gap: 2px;
-      min-height: 44px;
-      padding: var(--space-2) var(--space-3);
-      color: var(--color-text);
+      gap: var(--space-2);
+      padding: 9px 13px;
+      border: 1px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      color: var(--color-primary);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: var(--fw-medium);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    [data-page="dashboard"] .hero-card__cta:hover {
+      background-color: var(--color-primary);
+      color: var(--color-primary-contrast);
+    }
+
+    [data-page="dashboard"] .hero-card__cta .icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    [data-page="dashboard"] .hero-card__art {
+      display: none;
+      align-self: center;
+      color: var(--color-primary);
+    }
+
+    [data-page="dashboard"] .hero-card__art svg {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+    }
+
+    [data-page="dashboard"] .hero-card__pulse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ntw-pulse 3.4s ease-out infinite;
+    }
+
+    @keyframes ntw-pulse {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.45;
+      }
+      75%,
+      100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* ---- Índice de módulos ---- */
+    [data-page="dashboard"] .mods {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    [data-page="dashboard"] .mods__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    [data-page="dashboard"] .mods__head h2 {
+      font-size: var(--fs-lg);
+      letter-spacing: -0.01em;
+    }
+
+    [data-page="dashboard"] .mods__count {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    [data-page="dashboard"] .mods__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+
+    [data-page="dashboard"] .mod {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        "icon title arrow"
+        "icon desc arrow";
+      align-items: center;
+      column-gap: var(--space-3);
+      row-gap: 1px;
+      padding: var(--space-3);
       background-color: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
+      color: var(--color-text);
       transition: transform var(--transition-fast), border-color var(--transition-fast),
-        box-shadow var(--transition-fast), background-color var(--transition-fast);
+        background-color var(--transition-fast);
     }
 
-    .module-card:hover {
-      transform: translateY(-2px);
+    [data-page="dashboard"] .mod:hover {
+      transform: translateY(-1px);
       border-color: var(--color-primary);
-      box-shadow: var(--shadow-md);
       background-color: var(--color-surface-2);
     }
 
-    .module-card:focus-visible {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
-    }
-
-    .module-card:active {
-      transform: translateY(0);
-    }
-
-    .module-card__icon {
+    [data-page="dashboard"] .mod__icon {
       grid-area: icon;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       width: 34px;
       height: 34px;
-      font-size: var(--fs-lg);
-      line-height: 1;
-      background-color: var(--color-active);
+      color: var(--color-primary);
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
       border-radius: var(--radius-sm);
     }
 
-    .module-card__title {
-      grid-area: title;
-      font-weight: var(--fw-bold);
-      line-height: 1.2;
+    [data-page="dashboard"] .mod__icon .icon {
+      width: 18px;
+      height: 18px;
     }
 
-    .module-card__desc {
+    [data-page="dashboard"] .mod__title {
+      grid-area: title;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+    }
+
+    [data-page="dashboard"] .mod__num {
+      margin-inline-end: 6px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: var(--fw-normal);
+      color: var(--color-text-muted);
+    }
+
+    [data-page="dashboard"] .mod__desc {
       grid-area: desc;
       font-size: var(--fs-xs);
-      color: var(--color-text-muted);
       line-height: 1.35;
+      color: var(--color-text-muted);
     }
 
-    /* Tablet: 2 columnas, hero y stats full-width */
+    [data-page="dashboard"] .mod__arrow {
+      grid-area: arrow;
+      width: 15px;
+      height: 15px;
+      color: var(--color-text-muted);
+      transition: transform var(--transition-fast), color var(--transition-fast);
+    }
+
+    [data-page="dashboard"] .mod:hover .mod__arrow {
+      transform: translateX(3px);
+      color: var(--color-primary);
+    }
+
+    /* ---- Adaptación ---- */
     @media (min-width: 768px) {
-      [data-page="dashboard"] .bento {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-areas:
-          "hero hero"
-          "stats stats"
-          "mods mods";
+      [data-page="dashboard"] .readout {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
-      .stats {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+      [data-page="dashboard"] .readout__item,
+      [data-page="dashboard"] .readout__item:nth-child(2n) {
+        border-right: 1px solid var(--color-border);
+        border-bottom: 0;
+      }
+
+      [data-page="dashboard"] .readout__item:nth-child(4n) {
+        border-right: 0;
+      }
+
+      [data-page="dashboard"] .hero-card {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        align-items: center;
+      }
+
+      [data-page="dashboard"] .hero-card__art {
+        display: block;
+      }
+
+      [data-page="dashboard"] .mods__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    /* Escritorio: hero 2x2 + stats 2x2 arriba; módulos a todo el ancho */
     @media (min-width: 1024px) {
-      [data-page="dashboard"] .bento {
+      [data-page="dashboard"] .mods__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1400px) {
+      [data-page="dashboard"] .mods__grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        grid-template-areas:
-          "hero hero stats stats"
-          "mods mods mods mods";
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .modules {
-        grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
       }
     }
   </style>
 
   <header class="page-head">
+    <p class="eyebrow">NTW · Estado general</p>
     <h1>Panel de inicio</h1>
     <p class="lead">Diagnósticos rápidos y acceso directo a todos los módulos. Todo funciona sin conexión.</p>
   </header>
 
-  <div class="bento">
-    <a class="hero-card bento__hero" href="#/diagnostico" data-route="diagnostico">
-      <span class="hero-card__badge">Diagnóstico</span>
-      <span class="hero-card__title">DNS, latencia y geolocalización de IP</span>
-      <span class="hero-card__desc">Resuelve registros con Cloudflare DoH, mide el tiempo de respuesta HTTP y ubica una IP, directamente desde el navegador.</span>
-      <span class="hero-card__links">
-        <span class="hero-card__chip">DNS</span>
-        <span class="hero-card__chip">Latencia</span>
-        <span class="hero-card__chip">IP</span>
-      </span>
-      <span class="hero-card__cta">Abrir Diagnóstico →</span>
+  <section class="readout" aria-label="Resumen de datos guardados">
+    <a class="readout__item" href="#/inventario" data-route="inventario">
+      <span class="readout__index" aria-hidden="true">06</span>
+      <span class="readout__value" data-dash-inventario>0</span>
+      <span class="readout__label">Puntos de red</span>
     </a>
+    <a class="readout__item" href="#/conexiones" data-route="conexiones">
+      <span class="readout__index" aria-hidden="true">07</span>
+      <span class="readout__value" data-dash-conexiones>0</span>
+      <span class="readout__label">Conexiones</span>
+    </a>
+    <a class="readout__item" href="#/etiquetas" data-route="etiquetas">
+      <span class="readout__index" aria-hidden="true">08</span>
+      <span class="readout__value" data-dash-etiquetas>0</span>
+      <span class="readout__label">Etiquetas</span>
+    </a>
+    <a class="readout__item" href="#/pruebas" data-route="pruebas">
+      <span class="readout__index" aria-hidden="true">09</span>
+      <span class="readout__value" data-dash-pruebas>0</span>
+      <span class="readout__label">Pruebas</span>
+    </a>
+  </section>
 
-    <section class="stats bento__stats" aria-label="Resumen de datos guardados">
-      <a class="stat" href="#/inventario" data-route="inventario">
-        <span class="stat__value" data-dash-inventario aria-live="polite">0</span>
-        <span class="stat__label">Puntos de red</span>
-      </a>
-      <a class="stat" href="#/pruebas" data-route="pruebas">
-        <span class="stat__value" data-dash-pruebas aria-live="polite">0</span>
-        <span class="stat__label">Pruebas</span>
-      </a>
-      <a class="stat" href="#/conexiones" data-route="conexiones">
-        <span class="stat__value" data-dash-conexiones aria-live="polite">0</span>
-        <span class="stat__label">Conexiones</span>
-      </a>
-      <a class="stat" href="#/etiquetas" data-route="etiquetas">
-        <span class="stat__value" data-dash-etiquetas aria-live="polite">0</span>
-        <span class="stat__label">Etiquetas</span>
-      </a>
-      <p class="stats__hint" data-dash-hint hidden>
-        Aún no hay datos guardados. Empieza por
-        <a href="#/inventario" data-route="inventario">registrar tus puntos de red</a>.
-      </p>
-    </section>
+  <p class="dash-hint" data-dash-hint hidden>
+    Aún no hay datos guardados. Empieza por
+    <a href="#/inventario" data-route="inventario">registrar tus puntos de red</a>.
+  </p>
 
-    <section class="bento__mods" aria-label="Módulos de la aplicación">
-      <nav class="modules" aria-label="Módulos de la aplicación">
-        <a class="module-card" href="#/ponchado" data-route="ponchado">
-          <span class="module-card__icon" aria-hidden="true">🔌</span>
-          <span class="module-card__title">Ponchado</span>
-          <span class="module-card__desc">Códigos de color T568A/T568B.</span>
+  <section class="hero-card" aria-labelledby="hero-title">
+    <div class="hero-card__body">
+      <p class="eyebrow">Diagnóstico / 05</p>
+      <h2 id="hero-title">DNS, latencia y geolocalización de IP</h2>
+      <p class="hero-card__text">Resuelve registros con Cloudflare DoH, mide el tiempo de respuesta HTTP y ubica una IP, directamente desde el navegador.</p>
+      <ul class="chips" role="list">
+        <li class="chip">DNS</li>
+        <li class="chip">Latencia</li>
+        <li class="chip">IP</li>
+      </ul>
+      <a class="hero-card__cta" href="#/diagnostico" data-route="diagnostico">
+        Abrir Diagnóstico
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-card__art" aria-hidden="true">
+      <svg viewBox="0 0 360 240" role="presentation" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-width="1" opacity="0.4">
+          <path d="M60 52 154 107M300 52 206 107M60 188 154 133M300 188 206 133"/>
+        </g>
+        <g fill="none" stroke="currentColor">
+          <rect x="154" y="106" width="52" height="28" rx="5" stroke-width="1.4"/>
+          <circle class="hero-card__pulse" cx="180" cy="120" r="30" stroke-width="1"/>
+        </g>
+        <g fill="currentColor">
+          <circle cx="60" cy="52" r="3.5"/>
+          <circle cx="300" cy="52" r="3.5"/>
+          <circle cx="60" cy="188" r="3.5"/>
+          <circle cx="300" cy="188" r="3.5"/>
+        </g>
+        <g fill="currentColor" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="0.4">
+          <text x="180" y="125" text-anchor="middle">SW-01</text>
+          <text x="60" y="38" text-anchor="middle" opacity="0.6">RACK</text>
+          <text x="300" y="38" text-anchor="middle" opacity="0.6">AP-01</text>
+          <text x="60" y="204" text-anchor="middle" opacity="0.6">TOMA</text>
+          <text x="300" y="204" text-anchor="middle" opacity="0.6">NVR</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="mods" aria-labelledby="mods-title">
+    <div class="mods__head">
+      <h2 id="mods-title">Módulos</h2>
+      <span class="mods__count">11 herramientas</span>
+    </div>
+
+    <ul class="mods__grid" role="list">
+      <li>
+        <a class="mod" href="#/ponchado" data-route="ponchado">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ponchado"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">02</span>Ponchado</span>
+          <span class="mod__desc">Colores T568A/T568B y simulador.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/calculadoras" data-route="calculadoras">
-          <span class="module-card__icon" aria-hidden="true">🧮</span>
-          <span class="module-card__title">Calculadoras</span>
-          <span class="module-card__desc">Subredes, unidades y material.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/calculadoras" data-route="calculadoras">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-calculadoras"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">03</span>Calculadoras</span>
+          <span class="mod__desc">Subredes, unidades y material.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/planos" data-route="planos">
-          <span class="module-card__icon" aria-hidden="true">🗺️</span>
-          <span class="module-card__title">Planos</span>
-          <span class="module-card__desc">Dibuja el plano de la instalación.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/planos" data-route="planos">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-planos"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">04</span>Planos</span>
+          <span class="mod__desc">Dibuja rutas y marcadores.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/inventario" data-route="inventario">
-          <span class="module-card__icon" aria-hidden="true">📦</span>
-          <span class="module-card__title">Inventario</span>
-          <span class="module-card__desc">Puntos de red y su estado.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/diagnostico" data-route="diagnostico">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-diagnostico"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">05</span>Diagnóstico</span>
+          <span class="mod__desc">DNS, latencia y geolocalización.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/conexiones" data-route="conexiones">
-          <span class="module-card__icon" aria-hidden="true">🔗</span>
-          <span class="module-card__title">Conexiones</span>
-          <span class="module-card__desc">Enlaces puerto a puerto.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/inventario" data-route="inventario">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-inventario"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">06</span>Inventario</span>
+          <span class="mod__desc">Puntos de red y su estado.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/etiquetas" data-route="etiquetas">
-          <span class="module-card__icon" aria-hidden="true">🏷️</span>
-          <span class="module-card__title">Etiquetas</span>
-          <span class="module-card__desc">Etiquetas con QR para cables.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/conexiones" data-route="conexiones">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-conexiones"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">07</span>Conexiones</span>
+          <span class="mod__desc">Enlaces punto a puerto.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/pruebas" data-route="pruebas">
-          <span class="module-card__icon" aria-hidden="true">🧪</span>
-          <span class="module-card__title">Pruebas</span>
-          <span class="module-card__desc">Certificación y resultados.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/etiquetas" data-route="etiquetas">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-etiquetas"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">08</span>Etiquetas</span>
+          <span class="mod__desc">Etiquetas QR para cables.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/estandares" data-route="estandares">
-          <span class="module-card__icon" aria-hidden="true">📏</span>
-          <span class="module-card__title">Estándares</span>
-          <span class="module-card__desc">Normas, categorías y distancias.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/pruebas" data-route="pruebas">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pruebas"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">09</span>Pruebas</span>
+          <span class="mod__desc">Certificación e informes.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/configuracion" data-route="configuracion">
-          <span class="module-card__icon" aria-hidden="true">⚙️</span>
-          <span class="module-card__title">Configuración</span>
-          <span class="module-card__desc">Tema, respaldo y ajustes.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/estandares" data-route="estandares">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-estandares"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">10</span>Estándares</span>
+          <span class="mod__desc">Normas, categorías y glosario.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-        <a class="module-card" href="#/ayuda" data-route="ayuda">
-          <span class="module-card__icon" aria-hidden="true">❓</span>
-          <span class="module-card__title">Ayuda</span>
-          <span class="module-card__desc">Preguntas frecuentes y atajos.</span>
+      </li>
+      <li>
+        <a class="mod" href="#/configuracion" data-route="configuracion">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-configuracion"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">11</span>Configuración</span>
+          <span class="mod__desc">Tema, respaldo y datos.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
         </a>
-      </nav>
-    </section>
-  </div>
+      </li>
+      <li>
+        <a class="mod" href="#/ayuda" data-route="ayuda">
+          <span class="mod__icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-ayuda"/></svg></span>
+          <span class="mod__title"><span class="mod__num" aria-hidden="true">12</span>Ayuda</span>
+          <span class="mod__desc">Guía de uso y atajos.</span>
+          <svg class="mod__arrow" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+        </a>
+      </li>
+    </ul>
+  </section>
 </section>

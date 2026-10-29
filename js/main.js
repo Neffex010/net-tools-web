@@ -149,10 +149,35 @@ function initSidebar() {
   syncSidebarState();
 }
 
+/* ---------- Estado de conexión y versión ---------- */
+function initStatus() {
+  const statusEl = document.querySelector('[data-net-status]');
+  if (statusEl) {
+    const label = statusEl.querySelector('.net-status__label');
+    const render = () => {
+      const online = navigator.onLine !== false;
+      statusEl.classList.toggle('is-offline', !online);
+      if (label) {
+        label.textContent = online ? 'En línea' : 'Sin conexión';
+      }
+    };
+    render();
+    window.addEventListener('online', render);
+    window.addEventListener('offline', render);
+  }
+
+  const versionEl = document.querySelector('[data-app-version]');
+  const meta = document.querySelector('meta[name="ntw-version"]');
+  if (versionEl && meta && meta.content) {
+    versionEl.textContent = `v${meta.content}`;
+  }
+}
+
 /* ---------- Arranque ---------- */
 function start() {
   initTheme();
   initSidebar();
+  initStatus();
   initRouter();
 }
 

@@ -1,7 +1,7 @@
 ﻿# Net Tools Web — PWA de diagnóstico de red para técnicos de campo
 
-[![Demo](https://img.shields.io/badge/demo-en%20vivo-1f6feb)](https://neffex010.github.io/net-tools-web/)
-[![Tests](https://img.shields.io/badge/tests-35%2F35-brightgreen)](#cómo-correr-los-tests)
+[![Demo](https://img.shields.io/badge/demo-en%20vivo-35590b)](https://neffex010.github.io/net-tools-web/)
+[![Tests](https://img.shields.io/badge/tests-37%2F37-brightgreen)](#cómo-correr-los-tests)
 [![Licencia](https://img.shields.io/badge/licencia-MIT-blue)](LICENSE)
 
 Aplicación web **100 % frontend** (sin backend ni base de datos) para redes,
@@ -11,19 +11,35 @@ por el usuario.
 
 ## Capturas
 
-![Dashboard de Net Tools Web](docs/screenshots/dashboard.png)
+![Dashboard de Net Tools Web (tema oscuro)](docs/screenshots/dashboard-dark.png)
 
-| Ponchado | Calculadoras |
+| Tema claro | Ponchado |
 |---|---|
-| ![Guía y simulador de ponchado](docs/screenshots/ponchado.png) | ![Calculadoras de red](docs/screenshots/calculadoras.png) |
+| ![Dashboard en tema claro](docs/screenshots/dashboard-light.png) | ![Guía y simulador de ponchado](docs/screenshots/ponchado-dark.png) |
 
-| Etiquetas QR | Diagnóstico |
+| Calculadoras | Etiquetas QR |
 |---|---|
-| ![Etiquetas QR](docs/screenshots/etiquetas.png) | ![Diagnóstico de red](docs/screenshots/diagnostico.png) |
+| ![Calculadoras de red](docs/screenshots/calculadoras-dark.png) | ![Etiquetas QR](docs/screenshots/etiquetas-dark.png) |
+
+| Inventario | Diagnóstico |
+|---|---|
+| ![Inventario de puntos de red](docs/screenshots/inventario-dark.png) | ![Diagnóstico de red](docs/screenshots/diagnostico-dark.png) |
 
 <p align="center">
-  <img src="docs/screenshots/mobile.png" alt="Dashboard en móvil" width="300">
+  <img src="docs/screenshots/mobile-dark.png" alt="Dashboard en móvil" width="300">
 </p>
+
+## Diseño
+
+Dirección visual de **panel de instrumento**: chasis oscuro fijo (barra superior y
+menú), superficie de papel cálido en el tema claro y pantalla tinta en el oscuro,
+con **lima de señal** como único acento. La interfaz usa **Space Grotesk** y los
+datos, etiquetas y numeración de módulos usan **IBM Plex Mono**; ambas se sirven
+autoalojadas (`assets/fonts/`) para que la PWA siga funcionando sin conexión.
+
+El dashboard usa una tira de lectura tipo instrumento y un índice de módulos
+numerado. El resto de vistas comparte los mismos tokens, una retícula técnica de
+fondo y una capa compacta global que evita repetir ajustes de densidad.
 
 ## Para quién es
 
@@ -60,7 +76,9 @@ cuartos de telecomunicaciones o cualquier sitio sin cobertura.
 - **JavaScript vanilla** con ES Modules; **sin framework ni build tool**.
 - SPA con router por *hash* (`js/router.js`).
 - PWA: `service-worker.js` (caché versionada + modo offline) y `manifest.webmanifest`.
-- Estilos en CSS plano (`css/`). QR mediante librería vendorizada (`js/libs/qrcode.min.js`).
+- Estilos en CSS plano (`css/`), con tokens de diseño y dos temas. Tipografías
+  autoalojadas (Space Grotesk + IBM Plex Mono, SIL OFL 1.1).
+- QR mediante librería vendorizada (`js/libs/qrcode.min.js`).
 - Pruebas E2E con **Playwright** (devDependency) y un servidor HTTP propio.
 
 ## Cómo correr
@@ -89,10 +107,11 @@ npm test      # corre tests/e2e.spec.cjs
 ```
 
 La suite levanta el servidor en un puerto efímero, instala el service worker en
-un perfil limpio y verifica **35 comprobaciones**: precache versionado, banner de
-actualización, dashboard, vinculación Conexiones → Pruebas/Etiquetas, búsqueda en
-Conexiones, exportaciones CSV con BOM, borrado en cascada de puntos, modo offline,
-tema del sistema, menú móvil accesible y ausencia de errores de consola.
+un perfil limpio y verifica **37 comprobaciones**: precache versionado (incluidas
+las fuentes), banner de actualización, dashboard, índice de módulos, vinculación
+Conexiones → Pruebas/Etiquetas, búsqueda en Conexiones, exportaciones CSV con BOM,
+borrado en cascada de puntos, modo offline, tema del sistema, menú móvil accesible
+y ausencia de errores de consola.
 
 ## Demo
 
@@ -153,9 +172,12 @@ docs/       -> documentación del proyecto
   es-MX); el CSV de Pruebas usa `,`.
 - Las capturas de `docs/screenshots/` se generan con Playwright sobre datos de
   ejemplo; conviene regenerarlas si cambia la interfaz.
+- Las fuentes de `assets/fonts/` son SIL OFL 1.1; el texto de la licencia está en
+  `assets/fonts/OFL.txt`. Si se cambian, actualizar `css/fonts.css` y el precache.
 - Más detalles en [docs/arquitectura.md](docs/arquitectura.md),
   [docs/guia-uso.md](docs/guia-uso.md) y [docs/roadmap.md](docs/roadmap.md).
 
 ## Licencia
 
 MIT © 2026 Neffex010. Ver [LICENSE](LICENSE).
+Las tipografías incluidas son SIL OFL 1.1 (ver [assets/fonts/OFL.txt](assets/fonts/OFL.txt)).

@@ -299,7 +299,7 @@ export function init() {
           <td>${escapeHtml(entry.fecha.slice(0, 10))}</td>
           <td class="row-actions">
             <button type="button" class="btn btn--sm" data-edit="${escapeHtml(entry.id)}">Editar</button>
-            <button type="button" class="btn btn--sm" data-delete="${escapeHtml(entry.id)}">Eliminar</button>
+            <button type="button" class="btn btn--sm btn--danger" data-delete="${escapeHtml(entry.id)}">Eliminar</button>
           </td>
         </tr>`;
       })

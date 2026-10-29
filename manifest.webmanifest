@@ -9,8 +9,8 @@
   "id": "./",
   "display": "standalone",
   "orientation": "any",
-  "theme_color": "#1f6feb",
-  "background_color": "#f4f6fa",
+  "theme_color": "#080b0c",
+  "background_color": "#0c1113",
   "categories": ["utilities", "productivity", "education"],
   "icons": [
     {

@@ -1,6 +1,6 @@
 # Roadmap
 
-Estado al **2026-10-24** · versión actual del service worker: **1.0.3**
+Estado al **2026-10-29** · versión actual del service worker: **1.1.1**
 
 ## ✅ Entregado
 
@@ -21,7 +21,7 @@ Estado al **2026-10-24** · versión actual del service worker: **1.0.3**
 
 ### Hito P4 — Suite de pruebas persistente
 - `package.json` con `npm test` y `npm run serve`.
-- `tests/server.js` (servidor estático Node puro) y `tests/e2e.spec.cjs` (Playwright): precache, dashboard, integraciones, CSV, búsqueda, modo offline, tema, menú móvil y ausencia de errores de consola. **35/35 PASS** con `npm test`.
+- `tests/server.js` (servidor estático Node puro) y `tests/e2e.spec.cjs` (Playwright): precache, dashboard, integraciones, CSV, búsqueda, modo offline, tema, menú móvil y ausencia de errores de consola. **37/37 PASS** con `npm test`.
 - La versión del service worker se lee del propio archivo en la suite: ya no hay que actualizarla a mano en dos sitios.
 
 ### Hito P5 — Revisión de UX, lógica y accesibilidad (v1.0.3)
@@ -38,18 +38,31 @@ Estado al **2026-10-24** · versión actual del service worker: **1.0.3**
 - Etiquetas: los IDs se generan a partir del mayor existente, sin reutilizar huecos.
 - Configuración: el tamaño de los datos se mide en bytes UTF-8 reales.
 
-## 🔜 Pendiente
+### Hito P7 — Publicación en portafolio (v1.1.1)
+- Capturas del README regeneradas para el rediseño actual (tema oscuro, tema claro y móvil).
+- Ficha de Net Tools Web actualizada en el portafolio con descripción, stack, demo en vivo y enlace al código.
+- Versión de la app, service worker y paquete sincronizadas en **1.1.1**.
 
-### P6 — Publicación y pulido
-- Publicar en GitHub Pages (rama `main`, raíz) y verificar el flujo de actualización en producción.
-- Revisar `theme-color` por página e iconos maskable con zona segura.
-- Añadir capturas al README (hecho) y mantenerlas al día.
+### Hito P6 — Rediseño «panel de instrumento» (v1.1.0)
+- Nueva dirección visual: chasis oscuro fijo (barra superior, menú y pie), papel cálido en el tema claro, pantalla tinta en el oscuro y lima de señal como único acento; retícula técnica de fondo.
+- Tipografías autoalojadas: **Space Grotesk** (interfaz) e **IBM Plex Mono** (datos y etiquetas), precacheadas para uso offline. Licencia SIL OFL 1.1 en `assets/fonts/OFL.txt`.
+- Dashboard: tira de lectura de contadores, hero de Diagnóstico con topología SVG animada e índice de 11 módulos numerado.
+- Navegación agrupada (Inicio / Operación / Datos / Sistema), numeración de módulos, indicador real de conexión y versión en el menú.
+- Capa compacta global (`#app …`) para densificar todas las vistas sin duplicar ajustes; tokens de estado (`info`, `teal`) para badges legibles en ambos temas.
+- Iconos de línea propios (sprite SVG) en lugar de emojis; iconos PWA regenerados en tinta + lima.
+- Avisos de Diagnóstico rediseñados con borde de estado, sin bloques de color saturados.
+- Accesibilidad: foco visible sobre el chasis, `aria-hidden` en la numeración decorativa y contraste revisado en ambos temas.
+- Publicado anteriormente en GitHub Pages: <https://neffex010.github.io/net-tools-web/>.
+
+## 🔜 Pendiente
 
 ### Funcional
 - Integrar **Planos** con Inventario/Conexiones (asociar puntos a los elementos del plano) y persistencia opcional del canvas.
 - Impresión/PDF de la hoja de etiquetas en tamaño real (jsPDF previsto; aún no se usa).
 - Sincronización entre pestañas (`storage` event) para que el dashboard se actualice al vuelo.
-- Revisión de accesibilidad pendiente: contraste en tema oscuro y recorrido completo con lector de pantalla.
+
+### Accesibilidad
+- Revisión completa con lector de pantalla (recorrido y anuncios).
 
 ### Técnica
 - Migración opcional a IndexedDB para volúmenes grandes (localStorage ≈ 5 MB).

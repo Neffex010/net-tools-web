@@ -1,6 +1,6 @@
 /* Estructura del shell: topbar + sidebar + contenido.
  * Mobile-first. Breakpoints: 768px (tablet) y 1024px (escritorio). Solo dos.
- * Objetivo: layout compacto tipo bento grid, scroll mínimo.
+ * El marco (topbar, menú, pie) es oscuro en ambos temas: chasis de instrumento.
  */
 
 body {
@@ -9,7 +9,22 @@ body {
   line-height: var(--lh-base);
   color: var(--color-text);
   background-color: var(--color-bg);
+  /* Retícula técnica muy tenue, como el papel de un plano. */
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
   transition: background-color var(--transition), color var(--transition);
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
 }
 
 /* Enlace para saltar al contenido (accesibilidad) */
@@ -22,6 +37,10 @@ body {
   border-radius: var(--radius-sm);
   background-color: var(--color-primary);
   color: var(--color-primary-contrast);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   transition: top var(--transition-fast);
 }
 
@@ -40,7 +59,7 @@ body {
     "content";
 }
 
-/* Barra superior compacta */
+/* Barra superior: chasis */
 .topbar {
   grid-area: topbar;
   position: sticky;
@@ -51,24 +70,71 @@ body {
   gap: var(--space-2);
   height: var(--topbar-h);
   padding-inline: var(--space-3);
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-chrome);
+  border-bottom: 1px solid var(--color-chrome-border);
+  color: var(--color-chrome-text);
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-inline-end: auto;
+  color: var(--color-chrome-text);
   font-size: var(--fs-lg);
   font-weight: var(--fw-bold);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   white-space: nowrap;
+}
+
+.brand__mark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--color-accent);
 }
 
 .brand__tag {
   display: none;
-  margin-inline-start: var(--space-2);
-  font-size: var(--fs-xs);
+  padding-inline-start: var(--space-2);
+  border-inline-start: 1px solid var(--color-chrome-border);
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: var(--fw-normal);
-  color: var(--color-text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-chrome-muted);
+}
+
+/* Indicador real de conexión (navigator.onLine) */
+.net-status {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  padding-inline: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-chrome-muted);
+  white-space: nowrap;
+}
+
+.net-status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(205, 245, 100, 0.13);
+}
+
+.net-status.is-offline {
+  color: #ffc14d;
+}
+
+.net-status.is-offline .net-status__dot {
+  background-color: #ffc14d;
+  box-shadow: 0 0 0 3px rgba(255, 193, 77, 0.15);
 }
 
 .icon-button {
@@ -77,17 +143,18 @@ body {
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-md);
-  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  color: var(--color-chrome-text);
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .icon-button:hover {
-  background-color: var(--color-hover);
+  background-color: var(--color-chrome-hover);
 }
 
 .icon-button:active {
-  background-color: var(--color-active);
+  background-color: var(--color-chrome-active);
+  color: var(--color-accent);
 }
 
 .icon {
@@ -95,7 +162,12 @@ body {
   height: 20px;
 }
 
-/* Menú lateral */
+.topbar :focus-visible,
+.sidebar :focus-visible {
+  outline-color: var(--color-accent);
+}
+
+/* Menú lateral: chasis */
 .sidebar {
   grid-area: sidebar;
   position: fixed;
@@ -103,12 +175,16 @@ body {
   bottom: 0;
   left: 0;
   z-index: var(--z-sidebar);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
   width: var(--sidebar-w);
   max-width: 82vw;
-  padding: var(--space-2);
+  padding: var(--space-3) var(--space-2);
   overflow-y: auto;
-  background-color: var(--color-surface);
-  border-right: 1px solid var(--color-border);
+  background-color: var(--color-chrome);
+  border-right: 1px solid var(--color-chrome-border);
+  color: var(--color-chrome-text);
   transform: translateX(-100%);
   transition: transform var(--transition);
   will-change: transform;
@@ -118,33 +194,86 @@ body {
   transform: translateX(0);
 }
 
+.nav {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.nav__group {
+  display: grid;
+  gap: 6px;
+}
+
+.nav__section {
+  padding-inline: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-chrome-muted);
+  opacity: 0.85;
+}
+
 .nav__list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .nav__link {
+  position: relative;
   display: flex;
   align-items: center;
-  min-height: 40px;
+  gap: var(--space-2);
+  min-height: 36px;
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  color: var(--color-chrome-muted);
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
+.nav__num {
+  flex: none;
+  min-width: 1.5em;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.55;
+}
+
 .nav__link:hover {
-  background-color: var(--color-hover);
-  color: var(--color-text);
+  background-color: var(--color-chrome-hover);
+  color: var(--color-chrome-text);
 }
 
 .nav__link.is-active {
-  background-color: var(--color-active);
-  color: var(--color-primary);
-  font-weight: var(--fw-bold);
+  background-color: var(--color-chrome-active);
+  color: var(--color-accent);
+}
+
+.nav__link.is-active::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 7px;
+  bottom: 7px;
+  width: 2px;
+  border-radius: 2px;
+  background-color: var(--color-accent);
+}
+
+.sidebar__meta {
+  margin-top: auto;
+  padding: var(--space-3) var(--space-3) var(--space-1);
+  border-top: 1px solid var(--color-chrome-border);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-chrome-muted);
 }
 
 /* Telón del menú móvil */
@@ -184,19 +313,21 @@ body {
   outline: none;
 }
 
-/* Pie de página global, compacto (una línea) */
+/* Pie de página: cierre del chasis */
 .app-footer {
-  padding: var(--space-2) var(--space-4);
-  border-top: 1px solid var(--color-border);
-  background-color: var(--color-surface);
-  color: var(--color-text-muted);
-  font-size: var(--fs-xs);
-  line-height: 1.4;
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-chrome-border);
+  background-color: var(--color-chrome);
+  color: var(--color-chrome-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
   text-align: center;
 }
 
 .app-footer p {
-  max-width: 100ch;
+  max-width: 110ch;
   margin-inline: auto;
 }
 
@@ -218,6 +349,77 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
+ * Utilidades globales del sistema de diseño
+ * ------------------------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Etiquetas de formulario tipo panel: mono, mayúsculas, compactas.
+ * #app gana a los estilos [data-page="…"] de cada vista. */
+#app .field label,
+#app .field > label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+#app thead th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#app .badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#app .summary {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+}
+
+#app .btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#app .btn--danger {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+  background-color: transparent;
+}
+
+#app .btn--danger:hover {
+  background-color: color-mix(in srgb, var(--color-danger) 14%, transparent);
+  border-color: var(--color-danger);
+}
+
+/* ---------------------------------------------------------------------------
  * Capa compacta global.
  * Las vistas se inyectan en #app; estos overrides (#app …) ganan a los estilos
  * con ámbito [data-page="…"] de cada página y densifican toda la app sin tocar
@@ -228,17 +430,19 @@ body {
 }
 
 #app .page-head {
-  gap: 0.15rem;
+  gap: 0.2rem;
 }
 
 #app .page-head h1 {
-  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
-  line-height: 1.15;
+  font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
 }
 
 #app .page-head .lead {
   font-size: clamp(0.82rem, 1vw, 0.95rem);
   max-width: 95ch;
+  color: var(--color-text-muted);
 }
 
 #app .card {
@@ -249,6 +453,7 @@ body {
 #app .card > h2 {
   font-size: clamp(1rem, 1.4vw, 1.2rem);
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 #app .hint,
@@ -329,7 +534,8 @@ body {
 }
 
 @media (min-width: 768px) {
-  .brand__tag {
-    display: inline;
+  .brand__tag,
+  .net-status {
+    display: inline-flex;
   }
 }

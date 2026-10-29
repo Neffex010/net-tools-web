@@ -4,7 +4,7 @@
  * - network-first para navegaciones y el resto, con respaldo en caché sin conexión.
  */
 
-const APP_VERSION = '1.0.3';
+const APP_VERSION = '1.1.1';
 
 const CACHE_NAME = 'net-tools-web-' + APP_VERSION;
 
@@ -12,6 +12,7 @@ const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.webmanifest',
+  './css/fonts.css',
   './css/reset.css',
   './css/variables.css',
   './css/themes.css',
@@ -56,6 +57,9 @@ const PRECACHE_URLS = [
   './templates/informe-pruebas.html',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
+  './assets/fonts/space-grotesk-latin.woff2',
+  './assets/fonts/ibm-plex-mono-400-latin.woff2',
+  './assets/fonts/ibm-plex-mono-500-latin.woff2',
 ];
 
 const STATIC_PATTERN = /\.(?:css|js|mjs|json|png|svg|jpe?g|gif|webp|avif|ico|woff2?|ttf|otf|eot|map|txt|xml|webmanifest)$/i;
